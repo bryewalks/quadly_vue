@@ -15,6 +15,7 @@ import DronesNew from './views/DronesNew.vue'
 import DronesEdit from './views/DronesEdit.vue'
 import WeathersNew from './views/WeathersNew.vue'
 import WeathersShow from './views/WeathersShow.vue'
+import LocationReviewsNew from './views/LocationReviewsNew.vue'
 
 Vue.use(Router)
 
@@ -26,11 +27,12 @@ export default new Router({
     { path: '/about', name: 'about', component: About },
     { path: '/signup', name: 'signup', component: Signup },
     { path: '/login', name: 'login', component: Login },
-    { path: '/Logout', name: 'Logout', component: Logout },
+    { path: '/logout', name: 'logout', component: Logout },
     { path: '/userlocations', name: 'user-locations-index', component: UserLocationsIndex },
     { path: '/locations', name: 'locations-index', component: LocationsIndex },
     { path: '/locations/new', name: 'locations-new', component: LocationsNew },
     { path: '/locations/:id', name: 'locations-show', component: LocationsShow },
+    { path: '/locationreviews/:id', name: 'location-reviews-show', component: LocationsShow },
     { path: '/drones', name: 'drones-index', component: DronesIndex },
     { path: '/drones/new', name: 'drones-new', component: DronesNew },
     { path: '/drones/:id', name: 'drones-show', component: DronesShow },

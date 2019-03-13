@@ -1,5 +1,5 @@
 <template>
-  <div class="locations-index">
+  <div class="user-locations-index">
     <div class="container">
       <h1>Your Tracked Locations</h1>
           <table class="table table-striped table-dark">
@@ -20,6 +20,9 @@
               </th>
                <th scope="row">
                 {{ user_location.status }}
+                <button v-on:click="destroyUserLocation(user_location)" type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </th>
              </tr>
             </tbody>
@@ -43,6 +46,13 @@ export default {
       this.user_locations = response.data;
     });
   },
-  methods: {}
+  methods: {
+    destroyUserLocation: function(inputUserLocation) {
+      axios.delete("/api/user_locations/" + inputUserLocation.id)
+        .then(response => {
+          console.log("Success", response.data);
+        });
+    }
+  }
 };
 </script>
