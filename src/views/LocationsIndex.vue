@@ -28,7 +28,11 @@ export default {
   data: function() {
     return {
       locations: [],
-      location_reviews: []
+      location: {
+                  id: ""
+      },
+      location_reviews: [],
+      places: ""
     };
   },
   created: function() {
@@ -36,7 +40,15 @@ export default {
       this.locations = response.data;
     });
   },
-  methods: {},
+  methods: {
+    addMapMarkers: function() {
+      this.locations.forEach(function(location) {
+        console.log(location);
+      });
+    }
+  },
+  beforeMount: function() {
+  },
   mounted: function() {
       var chicago = {lat: 41.891486, lng: -87.630833};
 
@@ -46,15 +58,13 @@ export default {
         zoom: 14
       });
 
-      
       // this.locations.forEach(function(location) {
       //   console.log(location.address);
       // });
 
+      console.log(this.locations[0])
 
-      var places = [
-                    // { location_mark: {lat: location.latitude,lng: location.longitude}, description: '<h4>59 W Hubbard St #2</h4>'},
-                    ];
+      var places = [];
 
       places.forEach(function(place) {
         var infowindow = new google.maps.InfoWindow({ content: place.description });

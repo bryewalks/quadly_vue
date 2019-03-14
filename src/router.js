@@ -13,7 +13,6 @@ import DronesIndex from './views/DronesIndex.vue'
 import DronesShow from './views/DronesShow.vue'
 import DronesNew from './views/DronesNew.vue'
 import DronesEdit from './views/DronesEdit.vue'
-import WeathersNew from './views/WeathersNew.vue'
 import WeathersShow from './views/WeathersShow.vue'
 import LocationReviewsNew from './views/LocationReviewsNew.vue'
 import LocationReviewsShow from './views/LocationReviewsShow.vue'
@@ -39,7 +38,6 @@ export default new Router({
     { path: '/drones/new', name: 'drones-new', component: DronesNew },
     { path: '/drones/:id', name: 'drones-show', component: DronesShow },
     { path: '/drones/:id/edit', name: 'drones-edit', component: DronesEdit },
-    { path: '/weathers/new', name: 'weathers-new', component: WeathersNew },
     { path: '/weathers/:id', name: 'weathers-show', component: WeathersShow }
   ]
 })
