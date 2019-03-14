@@ -23,6 +23,7 @@
 
 <script>
 import axios from "axios";
+// import GoogleMap from "./components/GoogleMap";
 
 export default {
   data: function() {
@@ -37,40 +38,8 @@ export default {
     });
   },
   methods: {},
-  mounted: function() {
-      var chicago = {lat: 41.891486, lng: -87.630833};
-
-
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: chicago,
-        zoom: 14
-      });
-
-      
-      // this.locations.forEach(function(location) {
-      //   console.log(location.address);
-      // });
-
-
-      var places = [
-                    // { location_mark: {lat: location.latitude,lng: location.longitude}, description: '<h4>59 W Hubbard St #2</h4>'},
-                    ];
-
-      places.forEach(function(place) {
-        var infowindow = new google.maps.InfoWindow({ content: place.description });
-
-        var marker = new google.maps.Marker({
-          position: place.location_mark,
-          map: map,
-        });
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        }); 
-      });
-    }
+  components: {
+    GoogleMap
+  }
   };
 </script>
-<!--                     { location: {lat: 41.8921364,lng: -87.6370182}, description: '<h4>Actualize</h4>'},
-                    { location: {lat: 41.891486,lng: -87.630833}, description: '<h4>519 N Clark St, Chicago, IL</h4>'},
-                    { location: {lat: 41.890336,lng: -87.624701}, description: '<h4>430 N Michigan Ave, Chicago, IL 60611</h4>'},
-                    { location: {lat: 41.892987,lng: -87.630885}, description: '<h4>100 W Ontario St, Chicago, IL 60654</h4>'} -->
