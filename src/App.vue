@@ -5,8 +5,19 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
+    <google-map />  
   </div>
 </template>
+<script>
+  import GoogleMap from "./components/GoogleMap";
+
+  export default {
+    name: "App",
+    components: {
+      GoogleMap
+    }
+  };
+</script>
 
 <style>
 #app {

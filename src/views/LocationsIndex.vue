@@ -17,13 +17,11 @@
         </div>
       </div>
     </div> 
-    <div id="map"></div>   
   </div>
 </template>
 
 <script>
 import axios from "axios";
-// import GoogleMap from "./components/GoogleMap";
 
 export default {
   data: function() {
@@ -37,9 +35,6 @@ export default {
       this.locations = response.data;
     });
   },
-  methods: {},
-  components: {
-    GoogleMap
-  }
+  methods: {}
   };
 </script>
