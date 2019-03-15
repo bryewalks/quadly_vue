@@ -16,15 +16,7 @@
         <div class="form-group">
           <label>Location Address: </label>
           <input class='form-control' type='text' v-model="newLocationAddress" placeholder="ex: 8725 Elva Rd Dekalb, Il">
-        </div>
-        <div class="form-group">
-          <label>Latitude: </label>
-          <input class='form-control' type='text' v-model="newLocationLatitude" placeholder="ex: 41.9295">
-        </div>
-        <div class="form-group">
-          <label>Longitude: </label>
-          <input class='form-control' type='text' v-model="newLocationLongitude" placeholder="ex: 88.7504">
-        </div>        
+        </div>      
         <div class="form-group">
           <label>Flight Zone Status: </label>
           <input class='form-control' type='text' v-model="newLocationFlightZoneStatus" placeholder="ex: Real good at driving">
@@ -46,8 +38,6 @@ export default {
     return {
       newLocationName: "",
       newLocationAddress: "",
-      newLocationLatitude: "",
-      newLocationLongitude: "",
       newLocationFlightZoneStatus: "",
       errors: []
     };
@@ -58,8 +48,6 @@ export default {
       var params = {
                     name: this.newLocationName,
                     address: this.newLocationAddress,
-                    latitude: this.newLocationLatitude,
-                    longitude: this.newLocationLongitude,
                     flight_zone_status: this.newLocationFlightZoneStatus
                     };
                     
