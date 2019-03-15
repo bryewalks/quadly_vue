@@ -23,7 +23,7 @@
           <label>Notes: </label>
           <input class='form-control' type='text' v-model="newDroneNotes" placeholder="ex: Fix something">
         </div>        
-        <input type="submit" value="Add New location" class="btn btn-primary">
+        <input type="submit" value="Add Drone" class="btn btn-primary">
       </form>
     </div>  
   </div>

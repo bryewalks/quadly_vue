@@ -6,6 +6,7 @@
       <p>Status: {{ drone.status }}</p>
       <p>Notes: {{ drone.notes }}</p>
       <button v-on:click="destroyDrone()" class="btn btn-danger">Delete</button>
+      <router-link v-bind:to="'/drones/' + drone.id + '/edit'">Edit</router-link>
       </div>
     </div>  
   </div>
@@ -17,7 +18,9 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      drone: {},
+      drone: {
+              id: ""
+      },
       user_id: ""
     };
   },
