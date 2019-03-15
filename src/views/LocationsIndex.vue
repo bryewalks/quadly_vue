@@ -1,13 +1,28 @@
 <template>
   <div class="locations-index">
     <div class="container">
+    <GmapMap
+      :center="{lat:41.875562, lng:-87.624421}"
+      :zoom="9"
+      map-type-id="terrain"
+      style="width: 100%; height: 600px"
+    >
+      <GmapMarker
+        :key="index"
+        v-for="(location, index) in locations"
+        :position="location.position"
+        :clickable="true"
+        :draggable="false"
+        v-on:click="center=location.position"
+      />
+    </GmapMap>
       <h1>All Locations</h1>
       <router-link v-bind:to="'/locations/new'">Add Location</router-link>
       <div v-for="location in locations">
         <h2><router-link v-bind:to="'/locations/' + location.id">{{ location.name }}</router-link></h2>
         <p>Address: {{ location.address }}</p>
-        <p>Latitude: {{ location.latitude }}</p>
-        <p>Longitude: {{ location.longitude }}</p>
+        <p>Latitude: {{ location.position.lat }}</p>
+        <p>Longitude: {{ location.position.lng }}</p>
         <p>Status: {{ location.flight_zone_status }}</p>
         <div v-if="location.location_reviews" v-for="location_review in location.location_reviews">
           <p>Review</p>
@@ -16,8 +31,7 @@
           <p>Warning: {{ location_review.warning }}</p>
         </div>
       </div>
-    </div> 
-    <div id="map"></div>   
+    </div>
   </div>
 </template>
 
@@ -27,60 +41,27 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      locations: [],
-      location: {
-                  id: ""
-      },
+      locations: [{
+                    id: "",
+                    name: "",
+                    address: "",
+                    flight_zone_status: "",
+                    position: {
+                                lat: "",
+                                lng: ""
+                    }
+      }],
       location_reviews: [],
-      places: ""
     };
   },
   created: function() {
     axios.get("/api/locations").then(response => {
       this.locations = response.data;
-    });
-  },
-  methods: {
-    addMapMarkers: function() {
       this.locations.forEach(function(location) {
-        console.log(location);
+        location.position.lat = parseFloat(location.position.lat)
+        location.position.lng = parseFloat(location.position.lng)
       });
-    }
-  },
-  beforeMount: function() {
-  },
-  mounted: function() {
-      var chicago = {lat: 41.891486, lng: -87.630833};
-
-
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: chicago,
-        zoom: 14
-      });
-
-      // this.locations.forEach(function(location) {
-      //   console.log(location.address);
-      // });
-
-      console.log(this.locations[0])
-
-      var places = [];
-
-      places.forEach(function(place) {
-        var infowindow = new google.maps.InfoWindow({ content: place.description });
-
-        var marker = new google.maps.Marker({
-          position: place.location_mark,
-          map: map,
-        });
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        }); 
-      });
-    }
-  };
+    })
+  }
+}
 </script>
-<!--                     { location: {lat: 41.8921364,lng: -87.6370182}, description: '<h4>Actualize</h4>'},
-                    { location: {lat: 41.891486,lng: -87.630833}, description: '<h4>519 N Clark St, Chicago, IL</h4>'},
-                    { location: {lat: 41.890336,lng: -87.624701}, description: '<h4>430 N Michigan Ave, Chicago, IL 60611</h4>'},
-                    { location: {lat: 41.892987,lng: -87.630885}, description: '<h4>100 W Ontario St, Chicago, IL 60654</h4>'} -->
