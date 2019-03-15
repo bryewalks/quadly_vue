@@ -47,8 +47,8 @@ export default {
                     address: "",
                     flight_zone_status: "",
                     position: {
-                                lat: "",
-                                lng: ""
+                                lat: 0,
+                                lng: 0
                     }
       }],
       location_reviews: [],
