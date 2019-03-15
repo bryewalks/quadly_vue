@@ -4,8 +4,8 @@
       <h1>Location</h1>
       <h2>{{ location.name }}</h2>
       <div class="container">
-        <button v-on:click="submitStatus(visited)" class="btn btn-danger">Visited</button>
-        <button v-on:click="submitStatus(toVisit)" class="btn btn-danger">Want to Visit</button>
+        <button v-on:click="submitStatus(visited)" class="btn btn-primary">Visited</button>
+        <button v-on:click="submitStatus(toVisit)" class="btn btn-secondary">Want to Visit</button>
       </div>  
       <p>Address: {{ location.address }}</p>
       <p>Latitude: {{ location.position.lat }}</p>
