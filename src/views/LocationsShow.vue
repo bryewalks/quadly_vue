@@ -131,7 +131,9 @@ export default {
                     chance_of_precipitation: this.newWeatherChanceOfPrecipitation,
                     cloud_cover: this.newWeatherCloudCover,
                     wind_direction: this.newWeatherWindDirection,
-                    location_id: this.location.id
+                    location_id: this.location.id,
+                    search_lat: this.location.position.lat,
+                    search_lng: this.location.position.lng
                     };
                     
       axios.post("/api/weathers/", params)
