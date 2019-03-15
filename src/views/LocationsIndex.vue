@@ -14,6 +14,7 @@
         :clickable="true"
         :draggable="false"
         v-on:click="center=location.position"
+        :icon="{ url: require('../../public/drone-md.png')}"
       />
     </GmapMap>
       <h1>All Locations</h1>
