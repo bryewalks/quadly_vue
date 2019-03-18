@@ -18,8 +18,12 @@
           <input class='form-control' type='text' v-model="newLocationAddress" placeholder="ex: 8725 Elva Rd Dekalb, Il">
         </div>      
         <div class="form-group">
-          <label>Flight Zone Status: </label>
-          <input class='form-control' type='text' v-model="newLocationFlightZoneStatus" placeholder="ex: Real good at driving">
+          <label for="status">Flight Zone Status</label>
+          <select v-model="newLocationFlightZoneStatus" class="form-control" id="status">
+            <option value="no_flight_zone">No Flight Zone</option>
+            <option value="flight_zone">Flight Zone</option>
+            <option value="requires_authorization">Requires Authorization</option>
+          </select>
         </div>
         <input type="submit" value="Add New location" class="btn btn-primary">
       </form>

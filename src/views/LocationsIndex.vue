@@ -7,15 +7,24 @@
       map-type-id="terrain"
       style="width: 100%; height: 600px"
     >
-      <GmapMarker
-        :key="index"
-        v-for="(location, index) in locations"
-        :position="location.position"
-        :clickable="true"
-        :draggable="false"
-        v-on:click="center=location.position"
-        :icon="{ url: require('../../public/drone-md.png')}"
-      />
+    <GmapMarker
+      :key="index"
+      v-for="(location, index) in locations"
+      :position="location.position"
+      :clickable="true"
+      :draggable="false"
+      v-on:click="defineInfoWindow(location)"
+      :icon="{ url: require('../../public/drone-map.png')}"
+    />
+    <gmap-info-window
+        :options="{maxWidth: 300}"
+        :position="infoWindow.position"
+        :opened="infoWindow.open"
+        @closeclick="infoWindow.open = !infoWindow.open">
+        <router-link v-bind:to="'/locations/' + this.infoWindow.id"><div>{{ this.infoWindow.name }}</div></router-link>
+        <div>{{ this.infoWindow.address }}</div>
+        <div>{{ this.infoWindow.flight_zone_status }}</div>
+    </gmap-info-window>
     </GmapMap>
       <h1>All Locations</h1>
       <router-link v-bind:to="'/locations/new'">Add Location</router-link>
@@ -25,12 +34,6 @@
         <p>Latitude: {{ location.position.lat }}</p>
         <p>Longitude: {{ location.position.lng }}</p>
         <p>Status: {{ location.flight_zone_status }}</p>
-        <div v-if="location.location_reviews" v-for="location_review in location.location_reviews">
-          <p>Review</p>
-          <p>Rating: {{ location_review.rating }}</p>
-          <p>Summary: {{ location_review.summary }}</p>
-          <p>Warning: {{ location_review.warning }}</p>
-        </div>
       </div>
     </div>
   </div>
@@ -47,11 +50,16 @@ export default {
                     name: "",
                     address: "",
                     flight_zone_status: "",
-                    position: {
-                                lat: 0,
-                                lng: 0
-                    }
+                    position: {lat: 0, lng: 0}
       }],
+      infoWindow: {
+        position: {lat: 0, lng: 0},
+        open: false,
+        id: "",
+        name: "",
+        address: "",
+        flight_zone_status: ""
+      },
       location_reviews: [],
     };
   },
@@ -59,10 +67,20 @@ export default {
     axios.get("/api/locations").then(response => {
       this.locations = response.data;
       this.locations.forEach(function(location) {
-        location.position.lat = parseFloat(location.position.lat)
-        location.position.lng = parseFloat(location.position.lng)
+        location.position.lat = parseFloat(location.position.lat);
+        location.position.lng = parseFloat(location.position.lng);
       });
     })
+  },
+  methods: {
+    defineInfoWindow: function(inputLocation) {
+      this.infoWindow.id = inputLocation.id;
+      this.infoWindow.name = inputLocation.name;
+      this.infoWindow.address = inputLocation.address;
+      this.infoWindow.flight_zone_status = inputLocation.flight_zone_status;
+      this.infoWindow.position = inputLocation.position;
+      this.infoWindow.open = true;
+    }
   }
 }
 </script>

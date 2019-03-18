@@ -12,17 +12,21 @@
           <input class='form-control' type='text' v-model="newDroneName" placeholder="ex: Betsy">
         </div>
         <div class="form-group">
-          <label>Favorite: </label>
-          <input class='form-control' type='text' v-model="newDroneFavorite" placeholder="ex: yes">
-        </div>
-        <div class="form-group">
-          <label>Status: </label>
-          <input class='form-control' type='text' v-model="newDroneStatus" placeholder="ex: flyable">
+          <label for="status">Drone Condition</label>
+          <select v-model="newDroneStatus" class="form-control" id="status">
+            <option value="flyable">Flyable</option>
+            <option value="fixable">Fixable</option>
+            <option value="trash">Trash</option>
+          </select>
         </div>
         <div class="form-group">
           <label>Notes: </label>
           <input class='form-control' type='text' v-model="newDroneNotes" placeholder="ex: Fix something">
         </div>        
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="true" v-model="newDroneFavorite">
+          <label class="form-check-label" for="inlineCheckbox1">Favorite?</label>
+        </div>
         <input type="submit" value="Add Drone" class="btn btn-primary">
       </form>
     </div>  

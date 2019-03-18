@@ -105,7 +105,7 @@ export default {
                   
     axios.post("/api/location_reviews/", params)
       .then(response => {
-        this.$router.push("/location_reviews/" + response.data.id);
+        this.$router.push("/location_reviews/" + response.data.location_id);
       }).catch(error => {
         this.errors = error.response.data.errors;
       });

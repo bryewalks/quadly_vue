@@ -1,7 +1,7 @@
 <template>
   <div class="weathers-show">
     <div class="container">
-      <h1>Weather at {{ weather.location.address }}</h1>
+      <!-- <h1>Weather at {{ weather.location.address }}</h1> -->
       <div v-if="weather.good_to_fly">
         <h3>Weather Conditions Good For Flying!</h3>
       </div>
@@ -14,7 +14,7 @@
       <p>Max Gust Speed: {{ weather.max_gust_speed }}</p>
       <p>Chance of Precipitation: {{ weather.chance_of_precipitation }}</p>
       <p>Cloud Coverage: {{ weather.cloud_cover }}</p>
-      <p>Wind Direction: {{ weather.wind_direction }}</p>
+      <!-- <p>Wind Direction: {{ weather.wind_direction }}</p> -->
       </div>
     </div>  
   </div>

@@ -27,47 +27,26 @@
         </ul>
 
         <div class='container'>
-          <h1>Input Current Weather:</h1>
-
-          <form v-on:submit.prevent="submit()">
-            <div class="form-group">
-              <label>Temperature: </label>
-              <input class='form-control' type='text' v-model="newWeatherTemperature" placeholder="ex: 70">
-            </div>
-            <div class="form-group">
-              <label>Visible Miles: </label>
-              <input class='form-control' type='text' v-model="newWeatherVisibilityMiles" placeholder="ex: 5">
-            </div>
-            <div class="form-group">
-              <label>Max Gust Speed: </label>
-              <input class='form-control' type='text' v-model="newWeatherMaxGustSpeed" placeholder="ex: 10">
-            </div>
-            <div class="form-group">
-              <label>Wind Speed: </label>
-              <input class='form-control' type='text' v-model="newWeatherWindSpeed" placeholder="ex: 10">
-            </div>        
-            <div class="form-group">
-              <label>Chance of Precipitation: </label>
-              <input class='form-control' type='text' v-model="newWeatherChanceOfPrecipitation" placeholder="ex: 40">
-            </div>
-            <div class="form-group">
-              <label>Cloud Cover: </label>
-              <input class='form-control' type='text' v-model="newWeatherCloudCover" placeholder="ex: 60">
-            </div>
-            <div class="form-group">
-              <select v-model="newWeatherWindDirection">
-                <option value="north">North</option>
-                <option value="south">South</option>
-                <option value="east">East</option>
-                <option value="west">West</option>
-                <option value="north_east">North East</option>
-                <option value="north_west">North West</option>
-                <option value="south_east">South East</option>
-                <option value="south_west">South West</option>
-              </select>
-            </div>
-            <input type="submit" value="Check Weather" class="btn btn-primary">
-          </form>
+          <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#current-weather" aria-expanded="false" aria-controls="collapseExample" v-on:click="submit()">
+              Check Weather
+            </button>
+          </p>
+          <div class="collapse" id="current-weather">
+            <div class="card card-body">
+              <div v-if="weather.good_to_fly">
+                <h3>Weather Conditions Good For Flying!</h3>
+              </div>
+              <div v-else>
+                <h3>DO NOT FLY</h3>
+              </div>
+              <p>Wind Speed: {{ weather.wind_speed }}</p>
+              <p>Temperature: {{ weather.temperature }}</p>
+              <p>Visibility Miles: {{ weather.visibility_miles }}</p>
+              <p>Max Gust Speed: {{ weather.max_gust_speed }}</p>
+              <p>Chance of Precipitation: {{ weather.chance_of_precipitation }}</p>
+              <p>Cloud Coverage: {{ weather.cloud_cover }}</p>            </div>
+          </div>
         </div>
       </div>
     </div>  
@@ -90,14 +69,7 @@ export default {
       user_id: "",
       visited: "visited",
       toVisit: "to_visit",
-      admin: "",
-      newWeatherTemperature: "",
-      newWeatherVisibilityMiles: "",
-      newWeatherMaxGustSpeed: "",
-      newWeatherWindSpeed: "",
-      newWeatherChanceOfPrecipitation: "",
-      newWeatherCloudCover: "",
-      newWeatherWindDirection: "",
+      weather: {},
       errors: []
     };
   },
@@ -124,13 +96,6 @@ export default {
     },
     submit: function() {
       var params = {
-                    temperature: this.newWeatherTemperature,
-                    visibility_miles: this.newWeatherVisibilityMiles,
-                    max_gust_speed: this.newWeatherMaxGustSpeed,
-                    wind_speed: this.newWeatherWindSpeed,
-                    chance_of_precipitation: this.newWeatherChanceOfPrecipitation,
-                    cloud_cover: this.newWeatherCloudCover,
-                    wind_direction: this.newWeatherWindDirection,
                     location_id: this.location.id,
                     search_lat: this.location.position.lat,
                     search_lng: this.location.position.lng
@@ -138,7 +103,10 @@ export default {
                     
       axios.post("/api/weathers/", params)
         .then(response => {
-          this.$router.push("/weathers/" + response.data.id);
+          axios.get("/api/weathers/" + response.data.id).then(response => {
+            this.weather = response.data;
+          });
+          // this.$router.push("/weathers/" + response.data.id);
         }).catch(error => {
           this.errors = error.response.data.errors;
         });
