@@ -1,5 +1,6 @@
 <template>
   <div class="locations-show">
+
     <div class="container">
       <h1>Location</h1>
       <h2>{{ location.name }}</h2>
@@ -45,7 +46,8 @@
               <p>Visibility Miles: {{ weather.visibility_miles }}</p>
               <p>Max Gust Speed: {{ weather.max_gust_speed }}</p>
               <p>Chance of Precipitation: {{ weather.chance_of_precipitation }}</p>
-              <p>Cloud Coverage: {{ weather.cloud_cover }}</p>            </div>
+              <p>Cloud Coverage: {{ weather.cloud_cover }}</p>          
+             </div>
           </div>
         </div>
       </div>

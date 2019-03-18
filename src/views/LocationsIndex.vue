@@ -1,6 +1,5 @@
 <template>
   <div class="locations-index">
-    <div class="container">
     <GmapMap
       :center="{lat:41.875562, lng:-87.624421}"
       :zoom="9"
@@ -23,18 +22,39 @@
         @closeclick="infoWindow.open = !infoWindow.open">
         <router-link v-bind:to="'/locations/' + this.infoWindow.id"><div>{{ this.infoWindow.name }}</div></router-link>
         <div>{{ this.infoWindow.address }}</div>
-        <div>{{ this.infoWindow.flight_zone_status }}</div>
+        <div v-if="this.infoWindow.flight_zone_status === 'no_flight_zone'">No Flight Zone</div>
+        <div v-if="this.infoWindow.flight_zone_status === 'requires_authorization'">Requires Authorization</div>
     </gmap-info-window>
     </GmapMap>
-      <h1>All Locations</h1>
-      <router-link v-bind:to="'/locations/new'">Add Location</router-link>
-      <div v-for="location in locations">
-        <h2><router-link v-bind:to="'/locations/' + location.id">{{ location.name }}</router-link></h2>
-        <p>Address: {{ location.address }}</p>
-        <p>Latitude: {{ location.position.lat }}</p>
-        <p>Longitude: {{ location.position.lng }}</p>
-        <p>Status: {{ location.flight_zone_status }}</p>
+    <div class="index-photography-cta">
+      <h2>
+        Let me capture the best moments of your life
+      </h2>
+      <router-link v-bind:to="'/locations/new'" class="scroll">
+        Add a Location!
+      </router-link>
+    </div>
+    <div class="container">
+    <div class="support-hero">
+      <div class="container">
+        <form>
+          <i class="fa fa-search"></i>
+          <input type="text" placeholder="Search help topics" />
+        </form>
+
+        <div class="topics clearfix">
+          <div v-for="location in locations">
+            
+          <router-link v-bind:to="'/locations/' + location.id" class="topic">
+            <h2>{{ location.name }}</h2>
+            <i class="icon-linegraph"></i>
+            <p>{{ location.address }}</p>
+            <p v-if="location.flight_zone_status === 'no_flight_zone'">NO FLIGHT ZONE</p>
+          </router-link>
+          </div>
+        </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -80,7 +100,7 @@ export default {
       this.infoWindow.flight_zone_status = inputLocation.flight_zone_status;
       this.infoWindow.position = inputLocation.position;
       this.infoWindow.open = true;
-    }
+    },
   }
 }
 </script>

@@ -14,7 +14,7 @@
             <tbody>
             <tr v-for="user_location in user_locations" :key="user_location.id">
               <th scope="row">
-                <button v-on:click="newLocationReviewUserLocationId = user_location.id" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <button v-if="user_location.status === 'visited'" v-on:click="newLocationReviewUserLocationId = user_location.id" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                   Review
                 </button>
               </th>
@@ -25,10 +25,18 @@
                 {{ user_location.location.address }}
               </th>
                <th scope="row">
-                {{ user_location.status }}
+                <div v-if="user_location.status === 'to_visit'">
+                  Want to visit
                 <button v-on:click="destroyUserLocation(user_location)" type="button" class="close" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
+                </div>
+                <div v-if="user_location.status === 'visited'">
+                  visited
+                  <button v-on:click="destroyUserLocation(user_location)" type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
               </th>
              </tr>
             </tbody>
@@ -105,7 +113,7 @@ export default {
                   
     axios.post("/api/location_reviews/", params)
       .then(response => {
-        this.$router.push("/location_reviews/" + response.data.location_id);
+        this.$router.push("/locations/" + response.data.location_id);
       }).catch(error => {
         this.errors = error.response.data.errors;
       });

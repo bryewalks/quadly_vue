@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+<!--     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/drones">Your Drones</router-link> |
       <router-link to="/userlocations">Your Tracked Locations</router-link> |
@@ -8,8 +8,10 @@
       <router-link to="/login">Login</router-link> |
       <router-link to="/logout">Logout</router-link> |
       <router-link to="/signup">Signup</router-link>
-    </div>
+    </div> -->
+    <NavBar/>
     <router-view/>
+    <ThemeFooter/>
   </div>
 </template>
 
@@ -34,3 +36,14 @@
   color: #42b983;
 }
 </style>
+<script>
+  import NavBar from "./components/NavBar";
+  import ThemeFooter from "./components/ThemeFooter";
+  export default {
+    name: "App",
+    components: {
+      NavBar,
+      ThemeFooter
+    }
+  };
+</script>
