@@ -11,15 +11,27 @@
   <link rel="shortcut icon" href="images/favicon.ico">
 
   <!-- stylesheets -->
-  <link rel="stylesheet" type="text/css" href="/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="dist/theme.css" />
 
   <!-- javascript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="/js/theme.js"></script>
+  <script src="dist/theme.min.js"></script>
+  <script src="dist/mytheme.js"></script>
 </head>
 <body>
   <div id="app"></div>
-  <script>
+  <script type="text/javascript">
+    $(function () {
+      var trigger = new ScrollTrigger({
+        toggle: {
+          visible: 'customFadeInUp'
+        },
+        offset: {
+          y: 150
+        },
+        once: true
+      });
+    });
   </script>
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

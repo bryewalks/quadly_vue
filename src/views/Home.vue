@@ -4,11 +4,6 @@
           <li v-for="error in errors"> {{ error }} </li>
         </ul> -->
         <div class="event-hero">
-          <div class="container">
-            <h2 class="customFadeInUp">
-<!--               The Spacial Conference
- -->            </h2>
-          </div>
           <div class="tickets container">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
               <p v-if="this.ip" class="m-md-0">
