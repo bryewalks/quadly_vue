@@ -9,13 +9,13 @@ $(function () {
   
   retina.init();
 
-  // zoomerang.init();
+  zoomerang.init();
 
   animation.init();
 
   off_canvas.init();
 
-  // newsletter.init();
+  newsletter.init();
 });
 
 var animation = {
@@ -286,28 +286,28 @@ var off_canvas = {
   }
 };
 
-// var newsletter = {
-//   init: function () {
-//     var $form = $('.newsletter-form');
-//     var $feedback = $form.find('.newsletter-feedback');
+var newsletter = {
+  init: function () {
+    var $form = $('.newsletter-form');
+    var $feedback = $form.find('.newsletter-feedback');
 
-//     $form.ajaxChimp({
-//       callback: newsletterCallback,
-//       // UPDATE THIS LINK TO USE YOUR OWN LIST
-//       url: "http://wrapbootstrap.us16.list-manage.com/subscribe/post?u=0445d4d17445ee39d817296af&amp;id=1cfa1d2037" 
-//     });
+    $form.ajaxChimp({
+      callback: newsletterCallback,
+      // UPDATE THIS LINK TO USE YOUR OWN LIST
+      url: "http://wrapbootstrap.us16.list-manage.com/subscribe/post?u=0445d4d17445ee39d817296af&amp;id=1cfa1d2037" 
+    });
 
-//     function newsletterCallback(resp) {
-//       $feedback.removeClass('text-success text-danger text-white');
+    function newsletterCallback(resp) {
+      $feedback.removeClass('text-success text-danger text-white');
 
-//       if (resp.result === 'success') {
-//         $feedback.addClass('text-success');
-//       } else {
-//         $feedback.addClass('text-danger');
-//       }
-//     }
-//   }
-// };
+      if (resp.result === 'success') {
+        $feedback.addClass('text-success');
+      } else {
+        $feedback.addClass('text-danger');
+      }
+    }
+  }
+};
 
 var retina = {
   init: function () {

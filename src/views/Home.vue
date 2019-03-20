@@ -5,13 +5,18 @@
         </ul> -->
         <div class="event-hero">
           <div class="container">
+            <h2 class="customFadeInUp">
+<!--               The Spacial Conference
+ -->            </h2>
+          </div>
+          <div class="tickets container">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
               <p v-if="this.ip" class="m-md-0">
                 {{ this.ip.city }}
               </p>
-              <button v-on:click="submit()" class="btn-get-tickets" data-toggle="collapse" href="#">
+              <a v-on:click="submit()" class="btn-get-tickets" data-toggle="collapse" href="#current-weather">
                 Check Weather
-              </button>
+              </a>
               <p v-if="this.ip" class="m-0">
                 {{ this.ip.regionName }}
               </p>
