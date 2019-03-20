@@ -9,9 +9,9 @@
               <p v-if="this.ip" class="m-md-0">
                 {{ this.ip.city }}
               </p>
-              <a v-on:click="submit()" class="btn-get-tickets" data-toggle="collapse" href="#current-weather">
+              <button v-on:click="submit()" class="btn-get-tickets" data-toggle="collapse" href="#">
                 Check Weather
-              </a>
+              </button>
               <p v-if="this.ip" class="m-0">
                 {{ this.ip.regionName }}
               </p>
