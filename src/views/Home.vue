@@ -19,7 +19,7 @@
           </div>
         </div>
           <div class="collapse restaurant-gallery" id="current-weather">
-            <div class="card card-body">
+            <div class="card card-body" align="center">
               <div v-if="weather.good_to_fly">
                 <h3>Good Day to Fly in {{ this.ip.city }}!</h3>
               </div>
