@@ -5,6 +5,7 @@
       :zoom="9"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
+      :options="{styles: mapStyle}"
     >
     <GmapMarker
       :key="index"
@@ -25,11 +26,26 @@
         <div v-if="this.infoWindow.flight_zone_status === 'no_flight_zone'">No Flight Zone</div>
         <div v-if="this.infoWindow.flight_zone_status === 'requires_authorization'">Requires Authorization</div>
     </gmap-info-window>
+    <GmapCircle
+      :key="index + 'airport'"
+      v-for="(airport, index) in airports"
+      :center="airport.position"
+      :radius="8047"
+      :visible="true"
+      v-on:click="defineInfoWindow(airport)"
+      :fillColor="2"
+      :fillOpacity:="1.0">
+    </GmapCircle>
     </GmapMap>
+      <button v-if="this.airportShow" v-on:click="showAirports()" class="map-button">
+        Show Airports
+      </button>
+    <div class="map-button">
+      <button v-if="!this.airportShow" v-on:click="hideAirports()" class="map-button">
+        Hide Airports
+      </button>     
+    </div>
     <div class="index-photography-cta">
-      <h2>
-        Let me capture the best moments of your life
-      </h2>
       <router-link v-bind:to="'/locations/new'" class="scroll">
         Add a Location!
       </router-link>
@@ -70,7 +86,16 @@ export default {
                     name: "",
                     address: "",
                     flight_zone_status: "",
-                    position: {lat: 0, lng: 0}
+                    position: {lat: 0, lng: 0},
+                    airport: ""
+      }],
+      airports: [{
+                    id: "",
+                    name: "",
+                    address: "",
+                    flight_zone_status: "",
+                    position: {lat: 0, lng: 0},
+                    airport: ""
       }],
       infoWindow: {
         position: {lat: 0, lng: 0},
@@ -81,9 +106,12 @@ export default {
         flight_zone_status: ""
       },
       location_reviews: [],
+      mapStyle: [],
+      airportShow: true
     };
   },
   created: function() {
+    this.mapStyle = mapStyle
     axios.get("/api/locations").then(response => {
       this.locations = response.data;
       this.locations.forEach(function(location) {
@@ -94,6 +122,7 @@ export default {
   },
   methods: {
     defineInfoWindow: function(inputLocation) {
+      // this.infoWindow = inputLocation;
       this.infoWindow.id = inputLocation.id;
       this.infoWindow.name = inputLocation.name;
       this.infoWindow.address = inputLocation.address;
@@ -101,6 +130,21 @@ export default {
       this.infoWindow.position = inputLocation.position;
       this.infoWindow.open = true;
     },
+    showAirports: function() {
+      this.airportShow = false;
+      console.log(this.airportShow);
+      axios.get("/api/airports").then(response => {
+        this.airports = response.data;
+        this.airports.forEach(function(airport) {
+          airport.position.lat = parseFloat(airport.position.lat);
+          airport.position.lng = parseFloat(airport.position.lng);
+        });
+      })
+    },
+    hideAirports: function() {
+      this.airportShow = true;
+      this.airports = [];
+    }
   }
 }
 </script>

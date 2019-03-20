@@ -9,13 +9,13 @@ $(function () {
   
   retina.init();
 
-  zoomerang.init();
+  // zoomerang.init();
 
   animation.init();
 
   off_canvas.init();
 
-  newsletter.init();
+  // newsletter.init();
 });
 
 var animation = {
@@ -286,28 +286,28 @@ var off_canvas = {
   }
 };
 
-var newsletter = {
-  init: function () {
-    var $form = $('.newsletter-form');
-    var $feedback = $form.find('.newsletter-feedback');
+// var newsletter = {
+//   init: function () {
+//     var $form = $('.newsletter-form');
+//     var $feedback = $form.find('.newsletter-feedback');
 
-    $form.ajaxChimp({
-      callback: newsletterCallback,
-      // UPDATE THIS LINK TO USE YOUR OWN LIST
-      url: "http://wrapbootstrap.us16.list-manage.com/subscribe/post?u=0445d4d17445ee39d817296af&amp;id=1cfa1d2037" 
-    });
+//     $form.ajaxChimp({
+//       callback: newsletterCallback,
+//       // UPDATE THIS LINK TO USE YOUR OWN LIST
+//       url: "http://wrapbootstrap.us16.list-manage.com/subscribe/post?u=0445d4d17445ee39d817296af&amp;id=1cfa1d2037" 
+//     });
 
-    function newsletterCallback(resp) {
-      $feedback.removeClass('text-success text-danger text-white');
+//     function newsletterCallback(resp) {
+//       $feedback.removeClass('text-success text-danger text-white');
 
-      if (resp.result === 'success') {
-        $feedback.addClass('text-success');
-      } else {
-        $feedback.addClass('text-danger');
-      }
-    }
-  }
-};
+//       if (resp.result === 'success') {
+//         $feedback.addClass('text-success');
+//       } else {
+//         $feedback.addClass('text-danger');
+//       }
+//     }
+//   }
+// };
 
 var retina = {
   init: function () {
@@ -401,3 +401,142 @@ window.utils = {
     }
   }
 };
+
+var mapStyle = [
+    {
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#ff4400"
+            },
+            {
+                "saturation": -68
+            },
+            {
+                "lightness": -4
+            },
+            {
+                "gamma": 0.72
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "labels.icon"
+    },
+    {
+        "featureType": "landscape.man_made",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#0077ff"
+            },
+            {
+                "gamma": 3.1
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "stylers": [
+            {
+                "hue": "#00ccff"
+            },
+            {
+                "gamma": 0.44
+            },
+            {
+                "saturation": -33
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "stylers": [
+            {
+                "hue": "#44ff00"
+            },
+            {
+                "saturation": -23
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "hue": "#007fff"
+            },
+            {
+                "gamma": 0.77
+            },
+            {
+                "saturation": 65
+            },
+            {
+                "lightness": 99
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "gamma": 0.11
+            },
+            {
+                "weight": 5.6
+            },
+            {
+                "saturation": 99
+            },
+            {
+                "hue": "#0091ff"
+            },
+            {
+                "lightness": -86
+            }
+        ]
+    },
+    {
+        "featureType": "transit.line",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "lightness": -48
+            },
+            {
+                "hue": "#ff5e00"
+            },
+            {
+                "gamma": 1.2
+            },
+            {
+                "saturation": -23
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "saturation": -64
+            },
+            {
+                "hue": "#ff9100"
+            },
+            {
+                "lightness": 16
+            },
+            {
+                "gamma": 0.47
+            },
+            {
+                "weight": 2.7
+            }
+        ]
+    }
+]
