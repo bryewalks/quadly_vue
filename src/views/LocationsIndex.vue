@@ -1,5 +1,11 @@
 <template>
   <div class="locations-index">
+      <button v-if="this.airportShow" v-on:click="showAirports()" class="map-button">
+        Show Airports
+      </button>
+      <button v-if="!this.airportShow" v-on:click="hideAirports()" class="map-button">
+        Hide Airports
+      </button>     
     <GmapMap
       :center="{lat:41.875562, lng:-87.624421}"
       :zoom="9"
@@ -7,15 +13,18 @@
       style="width: 100%; height: 600px"
       :options="{styles: mapStyle}"
     >
+    <GmapCluster
+      :grid-size="50"
+      :zoomOnClick="true">
     <GmapMarker
       :key="index"
       v-for="(location, index) in locations"
       :position="location.position"
-      :clickable="true"
       :draggable="false"
       v-on:click="defineInfoWindow(location)"
       :icon="{ url: require('../../public/drone-map.png')}"
     />
+    </GmapCluster>
     <gmap-info-window
         :options="{maxWidth: 300}"
         :position="infoWindow.position"
@@ -26,25 +35,17 @@
         <div v-if="this.infoWindow.flight_zone_status === 'no_flight_zone'">No Flight Zone</div>
         <div v-if="this.infoWindow.flight_zone_status === 'requires_authorization'">Requires Authorization</div>
     </gmap-info-window>
+    <GmapCluster
+      :grid-size="50">
     <GmapCircle
       :key="index + 'airport'"
       v-for="(airport, index) in airports"
       :center="airport.position"
       :radius="8047"
       :visible="true"
-      v-on:click="defineInfoWindow(airport)"
-      :fillColor="2"
-      :fillOpacity:="1.0">
-    </GmapCircle>
+      v-on:click="defineInfoWindow(airport)"/>
+    </GmapCluster>
     </GmapMap>
-      <button v-if="this.airportShow" v-on:click="showAirports()" class="map-button">
-        Show Airports
-      </button>
-    <div class="map-button">
-      <button v-if="!this.airportShow" v-on:click="hideAirports()" class="map-button">
-        Hide Airports
-      </button>     
-    </div>
     <div class="index-photography-cta">
       <router-link v-bind:to="'/locations/new'" class="scroll">
         Add a Location!
@@ -57,17 +58,26 @@
           <i class="fa fa-search"></i>
           <input type="text" placeholder="Search help topics" />
         </form>
+<!--         <span>
+            Find Location: <input v-model="locationFilter" list="locations">
+          <datalist id="locations">
+            <option v-for="location in locations">{{location.name}}</option>
+          </datalist>
+        </span>  -->
 
         <div class="topics clearfix">
-          <div v-for="location in locations">
-            
-          <router-link v-bind:to="'/locations/' + location.id" class="topic">
-            <h2>{{ location.name }}</h2>
-            <i class="icon-linegraph"></i>
-            <p>{{ location.address }}</p>
-            <p v-if="location.flight_zone_status === 'no_flight_zone'">NO FLIGHT ZONE</p>
-          </router-link>
-          </div>
+          <div v-for="locations in formattedLocations()" class="row">
+            <div v-for="location in locations" class="col-lg-3">
+              <div>
+                <router-link v-bind:to="'/locations/' + location.id" class="topic">
+                  <h2>{{ location.name }}</h2>
+                  <i class="icon-linegraph"></i>
+                  <p>{{ location.address }}</p>
+                  <p v-if="location.flight_zone_status === 'no_flight_zone'">NO FLIGHT ZONE</p>
+                </router-link>
+              </div>
+            </div>
+          </div> 
         </div>
       </div>
     </div>
@@ -81,6 +91,7 @@ import axios from "axios";
 export default {
   data: function() {
     return {
+      locationFilter: "",
       locations: [{
                     id: "",
                     name: "",
@@ -122,7 +133,6 @@ export default {
   },
   methods: {
     defineInfoWindow: function(inputLocation) {
-      // this.infoWindow = inputLocation;
       this.infoWindow.id = inputLocation.id;
       this.infoWindow.name = inputLocation.name;
       this.infoWindow.address = inputLocation.address;
@@ -144,6 +154,9 @@ export default {
     hideAirports: function() {
       this.airportShow = true;
       this.airports = [];
+    },
+    formattedLocations: function() {
+      return _.chunk(this.locations, 4);
     }
   }
 }

@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
     <div class="container no-override">
       <a class="navbar-brand" href="index.html">
-        <img src="images/logo-alt-w.png" class="d-none d-lg-inline mr-2 w-25" />
+        <img src="/images/logo-alt-w.png" class="d-none d-lg-inline mr-2 w-25" />
         Quadly
       </a>
       <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
