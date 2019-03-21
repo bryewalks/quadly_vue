@@ -10543,9 +10543,7 @@ a.text-dark:hover, a.text-dark:focus {
   @page {
     size: a3;
   }
-  body {
-    min-width: 992px !important;
-  }
+
 
   .container {
     min-width: 992px !important;
@@ -37325,6 +37323,18 @@ body {
   margin-top: -60px;
   background-size: cover;
   background-position: center center;
+}
+body {
+  min-width: 992px !important;
+  background-image: url(../fancy_deboss.png);
+}
+
+.map-button {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
 }
 
 /*# sourceMappingURL=theme.css.map */

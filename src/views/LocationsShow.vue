@@ -29,7 +29,7 @@
 
         <div class='container'>
           <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#current-weather" aria-expanded="false" aria-controls="collapseExample" v-on:click="submit()">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#current-weather" aria-expanded="true" aria-controls="collapseExample" v-on:click="submit()">
               Check Weather
             </button>
           </p>
