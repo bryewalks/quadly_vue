@@ -3,7 +3,12 @@ import App from './App.vue'
 import router from './router'
 import axios from "axios";
 import * as VueGoogleMaps from "vue2-google-maps";
+import GmapCluster from 'vue2-google-maps/dist/components/cluster'
+import { chunk } from 'lodash'
+import Vue2Filters from "vue2-filters";
 
+
+Vue.component('GmapCluster', GmapCluster)
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyDKqT_CH7jObQjKYAIRukUJe9ERWl2HRHk",
