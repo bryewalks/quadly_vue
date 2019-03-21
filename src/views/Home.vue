@@ -17,6 +17,7 @@
               </p>
             </div>
           </div>
+
         </div>
           <div class="collapse restaurant-gallery" id="current-weather">
             <div class="card card-body" align="center">
@@ -26,6 +27,7 @@
               <div v-else>
                 <h3>DO NOT FLY</h3>
               </div>
+              <router-link v-bind:to="'/locations'">All Locations</router-link>
               <p>Wind Speed: {{ weather.wind_speed }}</p>
               <p>Temperature: {{ weather.temperature }}</p>
               <p>Visibility Miles: {{ weather.visibility_miles }}</p>
@@ -54,13 +56,9 @@ export default {
     };
   },
   created: function() {
-    var axiosTemp = axios;
-    delete axiosTemp.defaults.headers.common["Authorization"];
-    axiosTemp.get("http://ip-api.com/json/").then(response => {
-      this.ip = response.data
-    }, error => {
-        console.error(error);
-    });
+    fetch('http://ip-api.com/json/').then(response => 
+      response.json()).then(data => 
+        this.ip = data);
   },
   methods: {
     submit: function() {

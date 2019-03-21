@@ -7,8 +7,8 @@
         Hide Airports
       </button>     
     <GmapMap
-      :center="{lat:41.875562, lng:-87.624421}"
-      :zoom="9"
+      :center="{lat: this.ip.lat, lng: this.ip.lon}"
+      :zoom="10"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
       :options="{styles: mapStyle}"
@@ -35,8 +35,6 @@
         <div v-if="this.infoWindow.flight_zone_status === 'no_flight_zone'">No Flight Zone</div>
         <div v-if="this.infoWindow.flight_zone_status === 'requires_authorization'">Requires Authorization</div>
     </gmap-info-window>
-    <GmapCluster
-      :grid-size="50">
     <GmapCircle
       :key="index + 'airport'"
       v-for="(airport, index) in airports"
@@ -44,7 +42,6 @@
       :radius="8047"
       :visible="true"
       v-on:click="defineInfoWindow(airport)"/>
-    </GmapCluster>
     </GmapMap>
     <div class="index-photography-cta">
       <router-link v-bind:to="'/locations/new'" class="scroll">
@@ -91,6 +88,12 @@ import axios from "axios";
 export default {
   data: function() {
     return {
+      ip: {
+            lat: 0,
+            lon: 0,
+            city: "",
+            regionName: ""
+      },
       locationFilter: "",
       locations: [{
                     id: "",
@@ -130,6 +133,10 @@ export default {
         location.position.lng = parseFloat(location.position.lng);
       });
     })
+
+    fetch('http://ip-api.com/json/').then(response => 
+      response.json()).then(data => 
+        this.ip = data);
   },
   methods: {
     defineInfoWindow: function(inputLocation) {
@@ -142,7 +149,6 @@ export default {
     },
     showAirports: function() {
       this.airportShow = false;
-      console.log(this.airportShow);
       axios.get("/api/airports").then(response => {
         this.airports = response.data;
         this.airports.forEach(function(airport) {

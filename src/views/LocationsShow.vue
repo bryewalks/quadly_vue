@@ -79,6 +79,7 @@ export default {
     this.user_id = localStorage.getItem("user_id");
     axios.get("/api/locations/" + this.$route.params.id).then(response => {
       this.location = response.data;
+      console.log(this.user_id);
     });
   },
   methods: {
