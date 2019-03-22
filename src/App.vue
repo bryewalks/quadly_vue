@@ -11,11 +11,18 @@
 <script>
   import NavBar from "./components/NavBar";
   import ThemeFooter from "./components/ThemeFooter";
+  import Modal from "./components/Modal";
+
   export default {
     name: "App",
     components: {
       NavBar,
-      ThemeFooter
+      ThemeFooter,
+      Modal
+    },
+    data() { 
+      return { 
+      } 
     }
   };
 </script>

@@ -44,27 +44,48 @@
       v-on:click="defineInfoWindow(airport)"/>
     </GmapMap>
     <div class="index-photography-cta">
-      <router-link v-bind:to="'/locations/new'" class="scroll">
+<!--       <router-link v-bind:to="'/locations/new'" class="scroll">
         Add a Location!
-      </router-link>
+      </router-link> -->
+      <button @click="openModal()" class="scroll">
+        Add a Location
+      </button>
     </div>
     <div class="container">
     <div class="support-hero">
       <div class="container">
         <form>
           <i class="fa fa-search"></i>
-          <input type="text" placeholder="Search help topics" />
+          <input v-model:to="filterLocations" type="text" placeholder="Search help topics" />
         </form>
-<!--         <span>
-            Find Location: <input v-model="locationFilter" list="locations">
-          <datalist id="locations">
-            <option v-for="location in locations">{{location.name}}</option>
-          </datalist>
-        </span>  -->
+
+        <div id="wrapper" class="container">
+         <modal v-if="showModal">
+           <h3 slot="header" class="modal-title">
+             New Location
+           </h3>
+           <div align="center" slot="body">
+            <form v-on:submit.prevent="submit()">
+              <div class="form-group">
+                <label>Location Name: </label>
+                <input class='form-control' type='text' v-model="newLocationName" placeholder="ex: Afton Park">
+              </div>
+              <div class="form-group">
+                <label>Location Address: </label>
+                <input class='form-control' type='text' v-model="newLocationAddress" placeholder="ex: 8725 Elva Rd Dekalb, Il">
+              </div>
+              <div>
+                <input type="submit" value="Add New location" class="btn btn-primary">
+              </div>
+            </form>             
+              <button class="btn btn-danger" @click="closeModal()">Close</button>  
+           </div>
+         </modal>
+        </div>
 
         <div class="topics clearfix">
-          <div v-for="locations in formattedLocations()" class="row">
-            <div v-for="location in locations" class="col-lg-3">
+          <div v-for="(locations, index) in formattedLocations()" :key="index" class="row">
+            <div v-for="location in filterBy(locations, filterLocations)" class="col-lg-3">
               <div>
                 <router-link v-bind:to="'/locations/' + location.id" class="topic">
                   <h2>{{ location.name }}</h2>
@@ -84,10 +105,15 @@
 
 <script>
 import axios from "axios";
+import Vue2Filters from "vue2-filters";
+import Modal from "../components/Modal";
+
 
 export default {
   data: function() {
     return {
+      newLocationName: "",
+      newLocationAddress: "",
       ip: {
             lat: 0,
             lon: 0,
@@ -121,7 +147,9 @@ export default {
       },
       location_reviews: [],
       mapStyle: [],
-      airportShow: true
+      airportShow: true,
+      filterLocations: "",
+      showModal: false
     };
   },
   created: function() {
@@ -135,7 +163,7 @@ export default {
     })
 
     fetch('http://ip-api.com/json/').then(response => 
-      response.json()).then(data => 
+      response.json()).then(data =>
         this.ip = data);
   },
   methods: {
@@ -163,7 +191,31 @@ export default {
     },
     formattedLocations: function() {
       return _.chunk(this.locations, 4);
-    }
-  }
+    },
+    openModal() { 
+      this.showModal = true; 
+    },
+    closeModal() {
+      this.showModal = false;
+    },
+    submit: function() {
+      this.showModal = false;
+      var params = {
+                    name: this.newLocationName,
+                    address: this.newLocationAddress,
+                    };
+                    
+      axios.post("/api/locations/", params)
+        .then(response => {
+          response.data.position.lat = parseFloat(response.data.position.lat)
+          response.data.position.lng = parseFloat(response.data.position.lng)
+          this.locations.push(response.data);
+        });
+    } 
+  },
+  mixins: [Vue2Filters.mixin],
+  components: {
+    Modal
+  },
 }
 </script>

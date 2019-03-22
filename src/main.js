@@ -9,12 +9,16 @@ import Vue2Filters from "vue2-filters";
 
 
 Vue.component('GmapCluster', GmapCluster)
+
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyDKqT_CH7jObQjKYAIRukUJe9ERWl2HRHk",
     libraries: "places" // necessary for places input
   }
 });
+Vue.component('modal', {
+  template: '#modal-template'
+})
 
  axios.defaults.baseURL = 
   process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
