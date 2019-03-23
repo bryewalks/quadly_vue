@@ -4,16 +4,45 @@
           <li v-for="error in errors"> {{ error }} </li>
         </ul> -->
         <div class="event-hero">
+          <div v-if="flight_zone_status === 'flight_zone'">
+            <div class="alert alert-success" role="alert">
+              <button type="button" class="close" aria-label="Close" @click="flight_zone_status = ''">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="alert-heading">This location is good to fly!</h4>
+            </div>  
+          </div>
+          <div v-if="flight_zone_status === 'no_flight_zone'">
+            <div class="alert alert-danger" role="alert">
+              <button type="button" class="close" aria-label="Close" @click="flight_zone_status = ''">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="alert-heading">You are within five miles of a major airport. Please relocate before flying.</h4>
+            </div>  
+          </div>
+          <div v-if="flight_zone_status === 'requires_authorization'">
+            <div class="alert alert-warning" role="alert">
+              <button type="button" class="close" aria-label="Close" @click="flight_zone_status = ''">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="alert-heading">You are within five miles of a small airport. Please request authorization before flying.</h4>
+            </div>  
+          </div>
           <div class="tickets container">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-              <p v-if="this.ip" class="m-md-0">
-                {{ this.ip.city }}
+              <p v-if="ip" class="m-md-0">
+                {{ ip.city }}
               </p>
               <a v-on:click="submit()" class="btn-get-tickets" data-toggle="collapse" href="#current-weather">
                 Check Weather
               </a>
-              <p v-if="this.ip" class="m-0">
-                {{ this.ip.regionName }}
+              <a v-on:click="checkFlightStatus()" class="btn-get-tickets">
+                Flight Zone Status
+              </a>
+              <p v-if="ip" class="m-0">
+                {{ ip.regionName }}
+              </p>
+              <p>
               </p>
             </div>
           </div>
@@ -22,7 +51,7 @@
           <div class="collapse restaurant-gallery" id="current-weather">
             <div class="card card-body" align="center">
               <div v-if="weather.good_to_fly">
-                <h3>Good Day to Fly in {{ this.ip.city }}!</h3>
+                <h3>Good Day to Fly in {{ ip.city }}!</h3>
               </div>
               <div v-else>
                 <h3>DO NOT FLY</h3>
@@ -52,7 +81,8 @@ export default {
             city: "",
             regionName: ""
       },
-      errors: []
+      flight_zone_status: "",
+      errors: [],
     };
   },
   created: function() {
@@ -61,6 +91,16 @@ export default {
         this.ip = data);
   },
   methods: {
+    checkFlightStatus: function() {
+      var params = {
+                    latitude: this.ip.lat,
+                    longitude: this.ip.lon
+                    };
+      axios.post("/api/locations/", params)
+        .then(response => {
+          this.flight_zone_status = response.data.flight_zone_status;
+        });
+      },
     submit: function() {
       var params = {
                     search_lat: this.ip.lat,

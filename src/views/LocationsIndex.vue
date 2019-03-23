@@ -1,13 +1,13 @@
 <template>
   <div class="locations-index">
-      <button v-if="this.airportShow" v-on:click="showAirports()" class="map-button">
+      <button v-if="!airportShow" v-on:click="toggleAirports()" class="map-button">
         Show Airports
       </button>
-      <button v-if="!this.airportShow" v-on:click="hideAirports()" class="map-button">
+      <button v-if="airportShow" v-on:click="toggleAirports()" class="map-button">
         Hide Airports
       </button>     
     <GmapMap
-      :center="{lat: this.ip.lat, lng: this.ip.lon}"
+      :center="{lat: ip.lat, lng: ip.lon}"
       :zoom="10"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
@@ -30,11 +30,12 @@
         :position="infoWindow.position"
         :opened="infoWindow.open"
         @closeclick="infoWindow.open = !infoWindow.open">
-        <router-link v-bind:to="'/locations/' + this.infoWindow.id"><div>{{ this.infoWindow.name }}</div></router-link>
-        <div>{{ this.infoWindow.address }}</div>
-        <div v-if="this.infoWindow.flight_zone_status === 'no_flight_zone'">No Flight Zone</div>
-        <div v-if="this.infoWindow.flight_zone_status === 'requires_authorization'">Requires Authorization</div>
+        <router-link v-bind:to="'/locations/' + infoWindow.id"><div>{{ infoWindow.name }}</div></router-link>
+        <div>{{ infoWindow.address }}</div>
+        <div v-if="infoWindow.flight_zone_status === 'no_flight_zone'">No Flight Zone</div>
+        <div v-if="infoWindow.flight_zone_status === 'requires_authorization'">Requires Authorization</div>
     </gmap-info-window>
+    <div v-if="airportShow === true">
     <GmapCircle
       :key="index + 'airport'"
       v-for="(airport, index) in airports"
@@ -42,6 +43,7 @@
       :radius="8047"
       :visible="true"
       v-on:click="defineInfoWindow(airport)"/>
+    </div>  
     </GmapMap>
     <div class="index-photography-cta">
 <!--       <router-link v-bind:to="'/locations/new'" class="scroll">
@@ -50,6 +52,7 @@
       <button @click="openModal()" class="scroll">
         Add a Location
       </button>
+      <button @click="checkFlightStatus()"></button>
     </div>
     <div class="container">
     <div class="support-hero">
@@ -112,6 +115,7 @@ import Modal from "../components/Modal";
 export default {
   data: function() {
     return {
+      warning_message: "",
       newLocationName: "",
       newLocationAddress: "",
       ip: {
@@ -147,7 +151,7 @@ export default {
       },
       location_reviews: [],
       mapStyle: [],
-      airportShow: true,
+      airportShow: false,
       filterLocations: "",
       showModal: false
     };
@@ -159,6 +163,13 @@ export default {
       this.locations.forEach(function(location) {
         location.position.lat = parseFloat(location.position.lat);
         location.position.lng = parseFloat(location.position.lng);
+      });
+    })
+    axios.get("/api/airports").then(response => {
+      this.airports = response.data;
+      this.airports.forEach(function(airport) {
+        airport.position.lat = parseFloat(airport.position.lat);
+        airport.position.lng = parseFloat(airport.position.lng);
       });
     })
 
@@ -175,19 +186,8 @@ export default {
       this.infoWindow.position = inputLocation.position;
       this.infoWindow.open = true;
     },
-    showAirports: function() {
-      this.airportShow = false;
-      axios.get("/api/airports").then(response => {
-        this.airports = response.data;
-        this.airports.forEach(function(airport) {
-          airport.position.lat = parseFloat(airport.position.lat);
-          airport.position.lng = parseFloat(airport.position.lng);
-        });
-      })
-    },
-    hideAirports: function() {
-      this.airportShow = true;
-      this.airports = [];
+    toggleAirports: function() {
+      this.airportShow = !this.airportShow;
     },
     formattedLocations: function() {
       return _.chunk(this.locations, 4);
@@ -197,6 +197,17 @@ export default {
     },
     closeModal() {
       this.showModal = false;
+    },
+    checkFlightStatus: function() {
+      var params = {
+                    latitude: this.ip.lat,
+                    longitude: this.ip.lon
+                    };
+      axios.post("/api/locations/", params)
+        .then(response => {
+          this.flight_zone_status = response.data.flight_zone_status;
+          console.log(this.flight_zone_status);
+        });
     },
     submit: function() {
       this.showModal = false;
@@ -216,6 +227,6 @@ export default {
   mixins: [Vue2Filters.mixin],
   components: {
     Modal
-  },
+  }
 }
 </script>

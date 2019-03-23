@@ -61,3 +61,39 @@
 .index-photography-cta button:hover {
   background: #6690e4;
 }
+.class-a {
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+.class-a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.btn-get-tickets {
+  border: 2px solid #7a37a2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  padding: 16px 30px;
+  border-radius: 60px;
+  color: #7a37a2;
+  display: inline-block;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.btn-get-tickets:hover {
+  background: #7a37a2;
+  color: #fff;
+}
+@media (max-width: 767px) {
+  .btn-get-tickets {
+    margin-bottom: 20px;
+  }
+}
