@@ -79,7 +79,6 @@ export default {
     this.user_id = localStorage.getItem("user_id");
     axios.get("/api/locations/" + this.$route.params.id).then(response => {
       this.location = response.data;
-      console.log(this.user_id);
     });
   },
   methods: {
@@ -106,10 +105,7 @@ export default {
                     
       axios.post("/api/weathers/", params)
         .then(response => {
-          axios.get("/api/weathers/" + response.data.id).then(response => {
-            this.weather = response.data;
-          });
-          // this.$router.push("/weathers/" + response.data.id);
+          this.weather = response.data;
         }).catch(error => {
           this.errors = error.response.data.errors;
         });

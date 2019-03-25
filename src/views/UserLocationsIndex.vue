@@ -1,5 +1,36 @@
 <template>
   <div class="user-locations-index">
+    <GmapMap
+      :center="{lat: ip.lat, lng: ip.lon}"
+      :zoom="10"
+      map-type-id="terrain"
+      style="width: 100%; height: 600px"
+      :options="{styles: mapStyle}"
+    >
+    <GmapCluster
+      :grid-size="50"
+      :zoomOnClick="true">
+    <GmapMarker
+      :key="user_location.status + index"
+      v-for="(user_location, index) in user_locations"
+      :position="user_location.location.position"
+      :draggable="false"
+      v-on:click="defineInfoWindow(user_location, index)"
+      :icon="{ url: require('../../public/drone-map.png')}"
+    />
+    </GmapCluster>
+    <gmap-info-window
+        :options="{maxWidth: 300}"
+        :position="infoWindow.location.position"
+        :opened="infoWindow.open"
+        @closeclick="infoWindow.open = !infoWindow.open">
+        <router-link v-bind:to="'/locations/' + infoWindow.location.id"><div>{{ infoWindow.location.name }}</div></router-link>
+        <div>{{ infoWindow.location.address }}</div>
+        <div>{{ infoWindow.location.flight_zone_status.replace(/_/g,' ') }}</div>
+        <div>{{ infoWindow.status.replace(/_/g,' ') }}</div>
+        <button v-on:click="updateStatus(infoWindow, infoWindow.index)" v-if="infoWindow.status === 'to_visit'">Mark as visited</button>
+    </gmap-info-window>
+    </GmapMap>
     <div class="container">
       <h1>Your Tracked Locations</h1>
         <table class="table table-striped table-dark">
@@ -12,7 +43,7 @@
            </tr>
           </thead>
           <tbody>
-          <tr v-for="(user_location, index) in user_locations" :key="index" v-if="user_location.status === 'visited'">
+          <tr v-for="(user_location, index) in user_locations" :key="index + 'table'" v-if="user_location.status === 'visited'">
             <th scope="row">
               <button v-on:click="newLocationReviewUserLocationId = user_location.id" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 Review
@@ -26,7 +57,7 @@
             </th>
              <th scope="row">
                 visited
-                <button v-on:click="destroyUserLocation(user_location)" type="button" class="close" aria-label="Close">
+                <button v-on:click="destroyUserLocation(user_location, index)" type="button" class="close" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </th>
@@ -103,28 +134,80 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      user_locations: [],
+      user_locations: [{
+                          id: "",
+                          user_id: "",
+                          location_id: "",
+                          status: "",
+                          location: {
+                            id: "",
+                            name: "",
+                            address: "",
+                            flight_zone_status: "",
+                            airport: "",
+                            position: {
+                              lat: 0,
+                              lng: 0
+                            }
+                          }
+      }],
       newLocationReviewSummary: "",
       newLocationReviewWarning: "",
       newLocationReviewUserLocationId: "",
       newLocationReviewRating: "",
-      errors: []
+      errors: [],
+      ip: {
+            lat: 0,
+            lon: 0,
+            city: "",
+            regionName: ""
+      },
+      mapStyle: mapStyle,
+      infoWindow: {
+        open: false,
+        id: "",
+        status: "",
+        location: {
+                  id: "",
+                  name: "",
+                  address: "",
+                  flight_zone_status: "",
+                  position: {lat: 0, lng: 0}
+                },
+        index: ""
+      },
+      searchDistance: ""
                 };
   },
   created: function() {
     axios.get("/api/user_locations").then(response => {
       this.user_locations = response.data;
+      this.user_locations.forEach(function(user_location) {
+        user_location.location.position.lat = parseFloat(user_location.location.position.lat);
+        user_location.location.position.lng = parseFloat(user_location.location.position.lng);
+      });
     });
+
+    fetch('http://ip-api.com/json/').then(response => 
+      response.json()).then(data =>
+        this.ip = data);
   },
   methods: {
-    destroyUserLocation: function(inputUserLocation) {
+    defineInfoWindow: function(inputUserLocation, inputUserLocationIndex) {
+      this.infoWindow.id = inputUserLocation.id;
+      this.infoWindow.index = inputUserLocationIndex;
+      this.infoWindow.location.id = inputUserLocation.location.id;
+      this.infoWindow.location.name = inputUserLocation.location.name;
+      this.infoWindow.location.address = inputUserLocation.location.address;
+      this.infoWindow.location.flight_zone_status = inputUserLocation.location.flight_zone_status;
+      this.infoWindow.location.position = inputUserLocation.location.position;
+      this.infoWindow.status = inputUserLocation.status;
+      this.infoWindow.open = true;
+    },
+    destroyUserLocation: function(inputUserLocation, inputIndex) {
       axios.delete("/api/user_locations/" + inputUserLocation.id)
         .then(response => {
-          this.user_locations = response.data;
-          // console.log("Success", response.data);
-          // axios.get("/api/user_locations").then(response => {
-          //   this.user_locations = response.data;
-          // });
+          this.user_locations.splice(inputIndex, 1);
         });
     },
   submitReview: function() {
@@ -148,17 +231,13 @@ export default {
                     };
       axios.patch("api/user_locations/" + inputUserLocation.id, params)
       .then(response => {
-        this.user_locations.push(response.data);
+        var user_location = response.data;
+        user_location.location.position.lat = parseFloat(user_location.location.position.lat);
+        user_location.location.position.lng = parseFloat(user_location.location.position.lng);
+        this.user_locations.push(user_location);
         this.user_locations.splice(inputIndex, 1);
       })
     }
   }
 };
 </script>
-
-<!-- axios.patch("/api/drones/" + this.drone.id, params)
-  .then(response => {
-    this.$router.push("/drones/" + this.drone.id);
-  }).catch(error => {
-    this.errors = error.response.data.errors;
-  }); -->

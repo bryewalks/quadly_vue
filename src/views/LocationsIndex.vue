@@ -6,21 +6,34 @@
       <button v-if="airportShow" v-on:click="toggleAirports()" class="map-button">
         Hide Airports
       </button>  -->
-          <input v-model="filterAirports" type="text" placeholder="Search help topics" />
-          <input type="submit" value="search" class="btn btn-primary"/>
-
-      <input v-model="searchAddress" type="text" placeholder="Location" />
-      <input v-model="searchDistance" type="number" step="25" min="25" max="500"/>
-      <button @click="searchNearbyAirports()">search</button>
-      <button @click="getNearbyAirports()">nearby</button>
-      <button @click="clearAllAirports()">clear</button>
+        <input v-model="searchAddress" type="text" placeholder="Search Airports" />
+        <input v-model="searchDistance" type="number" step="25" min="25" max="500"/>
+        <button @click="searchNearbyAirports()">search</button>
+        <button @click="getNearbyAirports()">nearby</button>
+        <button @click="clearAllAirports()">clear</button>      
+      <span style="float:right">
+          <input v-model="filterAirports" type="radio" name="size" value="small"> Small</input>
+          <input v-model="filterAirports" type="radio" name="size" value="large"> Large</input> 
+          <input v-model="filterAirports" type="text" placeholder="Filter Results" />
+      </span>
+      <!-- <span style="float:left"> -->
+      <!-- </span> -->
     <GmapMap
+      ref="gmap"
+      @dragend="showCoords()"
       :center="{lat: ip.lat, lng: ip.lon}"
       :zoom="10"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
       :options="{styles: mapStyle}"
     >
+    <GmapMarker
+      :key="centerPosition.lat"
+      :position="centerPosition"
+      :draggable="false"
+      @click="openModal()"
+      :icon="{ url: require('../../public/center-icon.png')}"
+    />
     <GmapCluster
       :grid-size="50"
       :zoomOnClick="true">
@@ -44,7 +57,6 @@
         <button @click="getNearbyAirports(infoWindow.position.lat, infoWindow.position.lng)">Check Airports</button>
         <input v-model="searchDistance" type="number" step="25" min="25" max="50" value="10" />
     </gmap-info-window>
-    <!-- <div v-if="airportShow === true"> -->
     <GmapCircle
       :key="index + 'airport'"
       v-for="(airport, index) in filterBy(airports, filterAirports)"
@@ -52,15 +64,6 @@
       :radius="8047"
       :visible="true"
       @click="defineInfoWindow(airport)"/>
-    <!-- </div>   -->
-<!--     <GmapCircle
-      :key="index + 'airport'"
-      v-for="(airport, index) in airports"
-      :center="airport.position"
-      :radius="8047"
-      :visible="true"
-      @click="defineInfoWindow(airport)"/> -->
-    <!-- </div>   -->
     </GmapMap>
 
     <div class="index-photography-cta">
@@ -174,7 +177,12 @@ export default {
       airportName: "",
       searchDistance: 50,
       searchAddress: "",
-      showModal: false
+      latLng: "",
+      showModal: false,
+      centerPosition: {
+        lat: 0,
+        lng: 0     
+      }
     };
   },
   created: function() {
@@ -262,11 +270,22 @@ export default {
     clearAllAirports: function() {
       this.airports = "";
     },
+    showCoords: function() {
+      this.$refs.gmap.$mapPromise.then((map) => {
+        var latLng = map.getCenter();
+        this.centerPosition.lat = latLng.lat();
+        this.centerPosition.lng = latLng.lng();
+        console.log(this.centerPosition.lat);
+        console.log(this.centerPosition.lng);
+      })
+    },
     submit: function() {
       this.showModal = false;
       var params = {
                     name: this.newLocationName,
                     address: this.newLocationAddress,
+                    latitude: this.centerPosition.lat,
+                    longitude: this.centerPosition.lng
                     };
                     
       axios.post("/api/locations/", params)
@@ -275,11 +294,41 @@ export default {
           response.data.position.lng = parseFloat(response.data.position.lng)
           this.locations.push(response.data);
         });
+      this.newLocationName = "",
+      this.newLocationAddress = ""
     } 
   },
   mixins: [Vue2Filters.mixin],
   components: {
     Modal
+  },
+  mounted () {
+
+    // this.$refs.gmap.$mapPromise.then((map) => {
+    //   var latLng = map.getCenter();
+
+    //     // var latLng = map.getCenter()
+    //   // function showCoords() {
+    //   //   var latLng = map.getCenter();
+    //   //   // console.log("hello");
+        
+    //   // }
+    //   map.addListener(map, 'click', function($event){
+    //     showCoords(event);
+    //     // var latLng = map.getCenter();
+    //     // console.log(latLng.lat());
+    //     // console.log(latLng.lng());
+    //   })
+
+    // })
+    // // this.$refs.gmap.$event.addListener(map, 'dragend', function(){})
+    // // this.$refs.gmap.$gmapApiPromiseLazy().then((map) => { 
+    // //   // this.$refs.gmap.map.getCenter(map);
+    // //   var LatLng = this.$refs.gmap.$mapObject.getCenter();
+    // //   // var LatLng = map.$mapObject.getCenter();
+    // //   console.log(LatLng.lat())
+    // //   console.log(LatLng.lng())
+    // // })
   }
 }
 </script>

@@ -93,8 +93,8 @@ export default {
   methods: {
     checkFlightStatus: function() {
       var params = {
-                    latitude: this.ip.lat,
-                    longitude: this.ip.lon
+                    search_lat: this.ip.lat,
+                    search_lng: this.ip.lon
                     };
       axios.post("/api/locations/", params)
         .then(response => {
