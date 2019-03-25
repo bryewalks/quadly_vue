@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
+    "vue-star-rating": "^1.6.1",
     "vue2-filters": "^0.5.1",
     "vue2-google-maps": "^0.10.6"
   },

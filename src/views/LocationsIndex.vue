@@ -8,9 +8,10 @@
       </button>  -->
         <input v-model="searchAddress" type="text" placeholder="Search Airports" />
         <input v-model="searchDistance" type="number" step="25" min="25" max="500"/>
-        <button @click="searchNearbyAirports()">search</button>
-        <button @click="getNearbyAirports()">nearby</button>
-        <button @click="clearAllAirports()">clear</button>      
+        <button @click="searchNearbyAirports()">Search</button>
+        <button @click="getNearbyAirports()">Nearby</button>
+        <button @click="clearAllAirports()">Clear</button>      
+        <button @click="openModal2()">Drop Pin</button>      
       <span style="float:right">
           <input v-model="filterAirports" type="radio" name="size" value="small"> Small</input>
           <input v-model="filterAirports" type="radio" name="size" value="large"> Large</input> 
@@ -31,7 +32,7 @@
       :key="centerPosition.lat"
       :position="centerPosition"
       :draggable="false"
-      @click="openModal()"
+      @click="getNearbyAirports(centerPosition.lat, centerPosition.lng)"
       :icon="{ url: require('../../public/center-icon.png')}"
     />
     <GmapCluster
@@ -102,6 +103,25 @@
               </div>
             </form>             
               <button class="btn btn-danger" @click="closeModal()">Close</button>  
+           </div>
+         </modal>
+        </div>
+        <div id="wrapper" class="container">
+         <modal v-if="showModal2">
+           <h3 slot="header" class="modal-title">
+             New Location
+           </h3>
+           <div align="center" slot="body">
+            <form v-on:submit.prevent="submit()">
+              <div class="form-group">
+                <label>Location Name: </label>
+                <input class='form-control' type='text' v-model="newLocationName" placeholder="ex: Afton Park">
+              </div>
+              <div>
+                <input type="submit" value="Add New location" class="btn btn-primary">
+              </div>
+            </form>             
+              <button class="btn btn-danger" @click="closeModal2()">Close</button>  
            </div>
          </modal>
         </div>
@@ -179,6 +199,7 @@ export default {
       searchAddress: "",
       latLng: "",
       showModal: false,
+      showModal2: false,
       centerPosition: {
         lat: 0,
         lng: 0     
@@ -221,6 +242,12 @@ export default {
     closeModal: function() {
       this.showModal = false;
     },
+    openModal2: function() { 
+      this.showModal2 = true; 
+    },
+    closeModal2: function() {
+      this.showModal2 = false;
+    },
     checkFlightStatus: function() {
       var params = {
                     latitude: this.ip.lat,
@@ -233,8 +260,6 @@ export default {
         });
     },
     getNearbyAirports: function(lat, lng) {
-      // this.toggleAirports();
-      // this.airportNumber = 0;
       var params = {
                     latitude: lat || this.ip.lat,
                     longitude: lng || this.ip.lon,
@@ -275,12 +300,11 @@ export default {
         var latLng = map.getCenter();
         this.centerPosition.lat = latLng.lat();
         this.centerPosition.lng = latLng.lng();
-        console.log(this.centerPosition.lat);
-        console.log(this.centerPosition.lng);
       })
     },
     submit: function() {
-      this.showModal = false;
+      this.closeModal();
+      this.closeModal2();
       var params = {
                     name: this.newLocationName,
                     address: this.newLocationAddress,
@@ -301,34 +325,6 @@ export default {
   mixins: [Vue2Filters.mixin],
   components: {
     Modal
-  },
-  mounted () {
-
-    // this.$refs.gmap.$mapPromise.then((map) => {
-    //   var latLng = map.getCenter();
-
-    //     // var latLng = map.getCenter()
-    //   // function showCoords() {
-    //   //   var latLng = map.getCenter();
-    //   //   // console.log("hello");
-        
-    //   // }
-    //   map.addListener(map, 'click', function($event){
-    //     showCoords(event);
-    //     // var latLng = map.getCenter();
-    //     // console.log(latLng.lat());
-    //     // console.log(latLng.lng());
-    //   })
-
-    // })
-    // // this.$refs.gmap.$event.addListener(map, 'dragend', function(){})
-    // // this.$refs.gmap.$gmapApiPromiseLazy().then((map) => { 
-    // //   // this.$refs.gmap.map.getCenter(map);
-    // //   var LatLng = this.$refs.gmap.$mapObject.getCenter();
-    // //   // var LatLng = map.$mapObject.getCenter();
-    // //   console.log(LatLng.lat())
-    // //   console.log(LatLng.lng())
-    // // })
   }
 }
 </script>

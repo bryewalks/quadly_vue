@@ -6,9 +6,11 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import GmapCluster from 'vue2-google-maps/dist/components/cluster'
 import { chunk } from 'lodash'
 import Vue2Filters from "vue2-filters";
+import StarRating from 'vue-star-rating';
 
 
 Vue.component('GmapCluster', GmapCluster)
+Vue.component('star-rating', StarRating);
 
 Vue.use(VueGoogleMaps, {
   load: {

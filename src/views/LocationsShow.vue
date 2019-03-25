@@ -12,12 +12,14 @@
       <p>Latitude: {{ location.position.lat }}</p>
       <p>Longitude: {{ location.position.lng }}</p>
       <p>Status: {{ location.flight_zone_status }}</p>
+      <button v-if="user_admin === true" @click="destroyLocation()" class="btn btn-danger">Delete Location</button>
 
       <p>Reviews</p>
-      <div v-if="location.location_reviews" v-for="location_review in location.location_reviews">
-        <p>Rating: {{ location_review.rating }}</p>
+      <div :key="index" v-if="location.location_reviews" v-for="(location_review, index) in location.location_reviews">
+        <star-rating v-model="location_review.rating" v-bind:star-size="25" read-only></star-rating>
         <p>Summary: {{ location_review.summary }}</p>
         <p>Warning: {{ location_review.warning }}</p>
+        <button v-if="user_id == location_review.user_id" @click="destroyReview(location_review)" class="btn btn-danger">Delete Review</button>
       </div>
       </div>
 
@@ -65,10 +67,22 @@ export default {
                   position: {
                             lat: "",
                             lng: ""
-                            }
+                            },
+                  location_review: [{
+                                      
+                                                        id: "",
+                                                        rating: "",
+                                                        warning: "",
+                                                        location_id: "",
+                                                        user_id: ""
+                                      
+
+
+                  }]
                 },
       newUserLocationsStatus: "",
       user_id: "",
+      user_admin: "",
       visited: "visited",
       toVisit: "to_visit",
       weather: {},
@@ -77,8 +91,11 @@ export default {
   },
   created: function() {
     this.user_id = localStorage.getItem("user_id");
+    this.user_admin = localStorage.getItem("admin");
+    console.log(this.user_admin);
     axios.get("/api/locations/" + this.$route.params.id).then(response => {
       this.location = response.data;
+      console.log(this.location)
     });
   },
   methods: {
@@ -109,7 +126,21 @@ export default {
         }).catch(error => {
           this.errors = error.response.data.errors;
         });
-     }    
+     },
+     destroyReview: function(inputLocationReview, inputIndex) {
+       axios.delete("/api/location_reviews/" + inputLocationReview.id)
+         .then(response => {
+           console.log("Success", response.data);
+           this.location.location_reviews.splice(inputIndex, 1);
+         });
+     },
+     destroyLocation: function() {
+       axios.delete("/api/locations/" + this.location.id)
+         .then(response => {
+           console.log("Success", response.data);
+           this.$router.push("/locations");
+         });
+     },    
     }
   };
 </script>
