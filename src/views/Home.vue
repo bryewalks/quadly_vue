@@ -109,12 +109,8 @@ export default {
                     
       axios.post("/api/weathers/", params)
         .then(response => {
-          axios.get("/api/weathers/" + response.data.id).then(response => {
-            this.weather = response.data;
-          });
-        }).catch(error => {
-          this.errors = error.response.data.errors;
-        });
+          this.weather = response.data;
+        })
     }    
   }
 };

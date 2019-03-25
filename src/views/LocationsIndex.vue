@@ -1,11 +1,19 @@
 <template>
   <div class="locations-index">
-      <button v-if="!airportShow" v-on:click="toggleAirports()" class="map-button">
+<!--       <button v-if="!airportShow" v-on:click="toggleAirports()" class="map-button">
         Show Airports
       </button>
       <button v-if="airportShow" v-on:click="toggleAirports()" class="map-button">
         Hide Airports
-      </button>     
+      </button>  -->
+          <input v-model="filterAirports" type="text" placeholder="Search help topics" />
+          <input type="submit" value="search" class="btn btn-primary"/>
+
+      <input v-model="searchAddress" type="text" placeholder="Location" />
+      <input v-model="searchDistance" type="number" step="25" min="25" max="500"/>
+      <button @click="searchNearbyAirports()">search</button>
+      <button @click="getNearbyAirports()">nearby</button>
+      <button @click="clearAllAirports()">clear</button>
     <GmapMap
       :center="{lat: ip.lat, lng: ip.lon}"
       :zoom="10"
@@ -32,19 +40,29 @@
         @closeclick="infoWindow.open = !infoWindow.open">
         <router-link v-bind:to="'/locations/' + infoWindow.id"><div>{{ infoWindow.name }}</div></router-link>
         <div>{{ infoWindow.address }}</div>
-        <div v-if="infoWindow.flight_zone_status === 'no_flight_zone'">No Flight Zone</div>
-        <div v-if="infoWindow.flight_zone_status === 'requires_authorization'">Requires Authorization</div>
+        <div>{{ infoWindow.flight_zone_status.replace(/_/g,' ') }}</div>
+        <button @click="getNearbyAirports(infoWindow.position.lat, infoWindow.position.lng)">Check Airports</button>
+        <input v-model="searchDistance" type="number" step="25" min="25" max="50" value="10" />
     </gmap-info-window>
-    <div v-if="airportShow === true">
+    <!-- <div v-if="airportShow === true"> -->
     <GmapCircle
+      :key="index + 'airport'"
+      v-for="(airport, index) in filterBy(airports, filterAirports)"
+      :center="airport.position"
+      :radius="8047"
+      :visible="true"
+      @click="defineInfoWindow(airport)"/>
+    <!-- </div>   -->
+<!--     <GmapCircle
       :key="index + 'airport'"
       v-for="(airport, index) in airports"
       :center="airport.position"
       :radius="8047"
       :visible="true"
-      v-on:click="defineInfoWindow(airport)"/>
-    </div>  
+      @click="defineInfoWindow(airport)"/> -->
+    <!-- </div>   -->
     </GmapMap>
+
     <div class="index-photography-cta">
 <!--       <router-link v-bind:to="'/locations/new'" class="scroll">
         Add a Location!
@@ -52,7 +70,6 @@
       <button @click="openModal()" class="scroll">
         Add a Location
       </button>
-      <button @click="checkFlightStatus()"></button>
     </div>
     <div class="container">
     <div class="support-hero">
@@ -94,7 +111,8 @@
                   <h2>{{ location.name }}</h2>
                   <i class="icon-linegraph"></i>
                   <p>{{ location.address }}</p>
-                  <p v-if="location.flight_zone_status === 'no_flight_zone'">NO FLIGHT ZONE</p>
+                  <p>{{ location.flight_zone_status.replace(/_/g,' ') }}</p>
+
                 </router-link>
               </div>
             </div>
@@ -151,8 +169,11 @@ export default {
       },
       location_reviews: [],
       mapStyle: [],
-      airportShow: false,
       filterLocations: "",
+      filterAirports: "",
+      airportName: "",
+      searchDistance: 50,
+      searchAddress: "",
       showModal: false
     };
   },
@@ -165,19 +186,16 @@ export default {
         location.position.lng = parseFloat(location.position.lng);
       });
     })
-    axios.get("/api/airports").then(response => {
-      this.airports = response.data;
-      this.airports.forEach(function(airport) {
-        airport.position.lat = parseFloat(airport.position.lat);
-        airport.position.lng = parseFloat(airport.position.lng);
-      });
-    })
 
     fetch('http://ip-api.com/json/').then(response => 
       response.json()).then(data =>
         this.ip = data);
   },
   methods: {
+    inputFilter: function() {
+      this.filterAirports = this.tempFilter;
+      this.airportNumber = this.tempAirportNumber;
+    },
     defineInfoWindow: function(inputLocation) {
       this.infoWindow.id = inputLocation.id;
       this.infoWindow.name = inputLocation.name;
@@ -186,16 +204,13 @@ export default {
       this.infoWindow.position = inputLocation.position;
       this.infoWindow.open = true;
     },
-    toggleAirports: function() {
-      this.airportShow = !this.airportShow;
-    },
     formattedLocations: function() {
       return _.chunk(this.locations, 4);
     },
-    openModal() { 
+    openModal: function() { 
       this.showModal = true; 
     },
-    closeModal() {
+    closeModal: function() {
       this.showModal = false;
     },
     checkFlightStatus: function() {
@@ -208,6 +223,44 @@ export default {
           this.flight_zone_status = response.data.flight_zone_status;
           console.log(this.flight_zone_status);
         });
+    },
+    getNearbyAirports: function(lat, lng) {
+      // this.toggleAirports();
+      // this.airportNumber = 0;
+      var params = {
+                    latitude: lat || this.ip.lat,
+                    longitude: lng || this.ip.lon,
+                    distance: this.searchDistance
+                    };
+      var self = this
+      axios.get("/api/airports/", {params})
+        .then(response => {
+          var airports = response.data;
+          airports.forEach(function(airport) {
+            airport.position.lat = parseFloat(airport.position.lat);
+            airport.position.lng = parseFloat(airport.position.lng);
+            self.airports = airports;
+          });
+        });
+    },
+    searchNearbyAirports: function() {
+      var params = {
+                    address: this.searchAddress,
+                    distance: this.searchDistance
+                    };
+      var self = this
+      axios.get("/api/airports/", {params})
+        .then(response => {
+          var airports = response.data;
+          airports.forEach(function(airport) {
+            airport.position.lat = parseFloat(airport.position.lat);
+            airport.position.lng = parseFloat(airport.position.lng);
+            self.airports = airports;
+          });
+        });
+    },
+    clearAllAirports: function() {
+      this.airports = "";
     },
     submit: function() {
       this.showModal = false;
