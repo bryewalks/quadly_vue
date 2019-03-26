@@ -25427,7 +25427,7 @@ body {
 
 /* footer */
 .footer {
-  margin-top: 100px;
+  margin-top: 0px;
   background: #283142;
   padding: 55px 0 35px;
 }
@@ -28126,7 +28126,8 @@ body {
 }
 
 .index-features-user {
-  padding-top: 140px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 @media (max-width: 767px) {
   .index-features-user {

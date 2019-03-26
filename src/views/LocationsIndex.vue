@@ -57,6 +57,7 @@
         <div>{{ infoWindow.flight_zone_status.replace(/_/g,' ') }}</div>
         <button @click="getNearbyAirports(infoWindow.position.lat, infoWindow.position.lng)">Check Airports</button>
         <input v-model="searchDistance" type="number" step="25" min="25" max="50" value="10" />
+        <button @click="trackLocation()">Track</button>
     </gmap-info-window>
     <GmapCircle
       :key="index + 'airport'"
@@ -224,6 +225,13 @@ export default {
     inputFilter: function() {
       this.filterAirports = this.tempFilter;
       this.airportNumber = this.tempAirportNumber;
+    },
+    trackLocation: function() {
+      var params = {
+                    status: "to_visit",
+                    location_id: this.infoWindow.id
+                    };
+      axios.post("api/user_locations/", params)
     },
     defineInfoWindow: function(inputLocation) {
       this.infoWindow.id = inputLocation.id;
