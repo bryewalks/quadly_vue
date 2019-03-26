@@ -61,6 +61,47 @@
 .index-photography-cta button:hover {
   background: #6690e4;
 }
+
+.index-photography-drone {
+  height: 410px;
+  background: url("/user-drones.jpg") no-repeat 50% 20%;
+  background-size: cover;
+  text-align: center;
+  padding-top: 120px;
+}
+.index-photography-drone h2 {
+  color: #fff;
+  font-size: 32px;
+  letter-spacing: .5px;
+}
+@media (max-width: 767px) {
+  .index-photography-drone h2 {
+    font-size: 27px;
+    line-height: 35px;
+  }
+}
+.index-photography-drone button {
+  background: #88bee0;
+  box-shadow: 0 5px 20px 3px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: #fff;
+  display: inline-block;
+  margin-top: 50px;
+  padding: 20px 35px;
+  font-size: 13px;
+  border-radius: 3px;
+  text-decoration: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.index-photography-drone button:hover {
+  background: #6690e4;
+}
 .class-a {
   color: #007bff;
   text-decoration: none;
@@ -102,3 +143,16 @@
   background-color: #F5F7F9;
 }
 
+.table {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.table-content {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}

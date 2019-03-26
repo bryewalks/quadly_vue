@@ -31,100 +31,6 @@
         <button v-on:click="updateStatus(infoWindow, infoWindow.index)" v-if="infoWindow.status === 'to_visit'">Mark as visited</button>
     </gmap-info-window>
     </GmapMap>
-<!--         <table class="table table-striped table-dark">
-          <thead class="thead-light"> 
-           <tr>
-             <th scope="col">Review</th>
-             <th scope="col">Name</th>
-             <th scope="col">Address</th>
-             <th scope="col">Status</th>
-           </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(user_location, index) in user_locations" :key="index + 'table'" v-if="user_location.status === 'visited'">
-            <th scope="row">
-              <button v-on:click="newLocationReviewUserLocationId = user_location.id" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Review
-              </button>
-            </th>
-             <th scope="row">
-              <router-link v-bind:to="'/locations/' + user_location.location_id">{{ user_location.location.name }}</router-link>
-            </th>
-            <th scope="row">
-              {{ user_location.location.address }}
-            </th>
-             <th scope="row">
-                visited
-                <button v-on:click="destroyUserLocation(user_location, index)" type="button" class="close" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </th>
-           </tr>
-          </tbody>
-         </table>
-          
-           <div class="collapse" id="collapseExample">
-             <div class="card card-body">
-               <div class="location-reviews-new">
-
-                 <ul>
-                   <li v-for="error in errors"> {{ error }} </li>
-                 </ul>
-
-                 <div class="container">
-                   <form v-on:submit.prevent="submitReview()">
-                     <div class="form-group">
-                       <label>Summary: </label>
-                       <input class='form-control' type='text' v-model="newLocationReviewSummary" placeholder="ex: Betsy">
-                     </div>
-                     <div class="form-group">
-                       <label>Warning: </label>
-                       <input class='form-control' type='text' v-model="newLocationReviewWarning" placeholder="ex: yes">
-                     </div>
-                     <div class="form-group">
-                       <label>Rating: </label>
-                       <input class='form-control' type='text' v-model="newLocationReviewRating" placeholder="ex: yes">
-                     </div>       
-                     <input type="submit" value="Review Location" class="btn btn-primary">
-                   </form>
-                 </div>  
-               </div>
-             </div>
-           </div>
-          <table class="table table-striped table-dark">
-            <thead class="thead-light"> 
-             <tr>
-               <th scope="col">Mark</th>
-               <th scope="col">Name</th>
-               <th scope="col">Address</th>
-               <th scope="col">Status</th>
-             </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(user_location, index) in user_locations" :key="index" v-if="user_location.status === 'to_visit'">
-              <th scope="row">
-                <button v-on:click="updateStatus(user_location, index)" class="btn btn-success" type="button">
-                  Visited
-                </button>
-              </th>
-               <th scope="row">
-                <router-link v-bind:to="'/locations/' + user_location.location_id">{{ user_location.location.name }}</router-link>
-              </th>
-              <th scope="row">
-                {{ user_location.location.address }}
-              </th>
-               <th scope="row">
-                  To Visit
-                  <button v-on:click="destroyUserLocation(user_location)" type="button" class="close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-              </th>
-             </tr>
-            </tbody>
-           </table> -->
-
-
-
       <div class="index-app-news">
         <div class="container">
           <span>All</span>
@@ -132,12 +38,16 @@
           <router-link v-bind:to="'/locations/'" >Back to locations.</router-link>
         </div>
       </div>
-    <div class="new-topic container">
-           <div class="cart" v-if="statusCount('to_visit')">
+      <div class="new-topic container">
+           <div class="cart table" v-if="statusCount('to_visit')">
+              <div class="store-cart-header">
+                <div class="container">
+                  <h3>Locations To Visit</h3>
+                </div>
+              </div>
              <div class="container">
                <div class="row cart-headers d-none d-md-flex">
                  <div class="col-md-3">
-                   <span>Mark:</span>
                  </div>
                  <div class="col-md-3">
                    <span class="price">Name:</span>
@@ -150,14 +60,14 @@
                </div>
                <div v-for="(user_location, index) in user_locations" :key="index" v-if="user_location.status === 'to_visit'" class="row cart-product">
                  <div class="col-md-3">
-                    <button v-on:click="updateStatus(user_location, index)" class="btn btn-success" type="button">
+                    <button v-on:click="updateStatus(user_location, index)" class="btn btn-success table-content" type="button">
                       Visited
                     </button>
                  </div>
-                 <div class="col-md-3" >
+                 <div class="col-md-3 table-content" >
                   <router-link v-bind:to="'/locations/' + user_location.location_id">{{ user_location.location.name }}</router-link>
                  </div>
-                 <div class="col-md-3 col-3">
+                 <div class="col-md-3 col-3 table-content">
                    <span class="price">
                     {{ user_location.location.address }}
                    </span>
@@ -183,11 +93,16 @@
               </div>
              </div>
 
-            <div class="cart" v-if="statusCount('visited')">
+
+            <div class="cart table" v-if="statusCount('visited')">
+            <div class="store-cart-header">
+              <div class="container">
+                <h3>Visited Locations</h3>
+              </div>
+            </div>
               <div class="container">
                 <div class="row cart-headers d-none d-md-flex">
                   <div class="col-md-3">
-                    <span>Review:</span>
                   </div>
                   <div class="col-md-3">
                     <span class="price">Name:</span>
@@ -199,17 +114,19 @@
                   </div>
                 </div>
               </div>
+
+
             <div class="container">
                 <div v-for="(user_location, index) in user_locations" :key="index" v-if="user_location.status === 'visited'" class="row cart-product">
-                  <div class="col-md-3">
+                  <div class="col-md-3 table-content">
                     <button v-on:click="newLocationReviewUserLocationId = user_location.id" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                       Review
                     </button>
                   </div>
-                  <div class="col-md-3" >
+                  <div class="col-md-3 table-content" >
                    <router-link v-bind:to="'/locations/' + user_location.location_id">{{ user_location.location.name }}</router-link>
                   </div>
-                  <div class="col-md-3 col-3">
+                  <div class="col-md-3 col-3 table-content">
                     <span class="price">
                      {{ user_location.location.address }}
                     </span>
