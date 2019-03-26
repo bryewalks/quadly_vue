@@ -21,6 +21,54 @@
   transition: all 0.2s;
 }
 
+/*.image-overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}*/
+
+.show-reviews {
+  height: 410px;
+  background: url("../notebook.jpg") no-repeat 50% 20%;
+  background-size: cover;
+  background-position: center 10%;
+  text-align: center;
+  padding-top: 120px;
+}
+.show-reviews h2 {
+  color: #fff;
+  font-size: 32px;
+  letter-spacing: .5px;
+}
+@media (max-width: 767px) {
+  .show-reviews h2 {
+    font-size: 27px;
+    line-height: 35px;
+  }
+}
+.show-reviews button {
+  background: #88bee0;
+  box-shadow: 0 5px 20px 3px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: #fff;
+  display: inline-block;
+  margin-top: 50px;
+  padding: 20px 35px;
+  font-size: 13px;
+  border-radius: 3px;
+  text-decoration: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.show-reviews button:hover {
+  background: #6690e4;
+}
+
 .index-photography-cta {
   height: 410px;
   background: url("../images/unsplash/aerial.jpg") no-repeat 50% 20%;

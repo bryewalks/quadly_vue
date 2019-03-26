@@ -44,7 +44,7 @@
       :position="location.position"
       :draggable="false"
       v-on:click="defineInfoWindow(location)"
-      :icon="{ url: require('../../public/drone-map.png')}"
+      :icon="{ url: require('../../public/images/icons/map-icon.png')}"
     />
     </GmapCluster>
     <gmap-info-window
@@ -67,8 +67,7 @@
       :visible="true"
       @click="defineInfoWindow(airport)"/>
     </GmapMap>
-
-    <div class="index-photography-cta">
+    <div class="index-photography-cta overlay">
       <button @click="openModal()" class="scroll">
         Add a Location
       </button>
@@ -144,11 +143,19 @@
     </div>
   </div>
 </template>
+<style>
+  .map-bar {
+    position: absolute;
+    top: 70%;
+    left: 25%;
+    z-index: 5;  }
+</style>
 
 <script>
 import axios from "axios";
 import Vue2Filters from "vue2-filters";
 import Modal from "../components/Modal";
+import MapNavBar from "../components/MapNavBar";
 
 
 export default {
@@ -189,7 +196,7 @@ export default {
         flight_zone_status: ""
       },
       location_reviews: [],
-      mapStyle: [],
+      mapStyle: mapStyle,
       filterLocations: "",
       filterAirports: "",
       airportName: "",
@@ -206,7 +213,6 @@ export default {
     };
   },
   created: function() {
-    this.mapStyle = mapStyle
     axios.get("/api/locations").then(response => {
       this.locations = response.data;
       this.locations.forEach(function(location) {
@@ -331,7 +337,8 @@ export default {
   },
   mixins: [Vue2Filters.mixin],
   components: {
-    Modal
+    Modal,
+    MapNavBar
   }
 }
 </script>
