@@ -67,6 +67,11 @@
           </div>
       </div>
 </template>
+<style>
+  .event-hero {
+    margin-bottom: 100px;
+  }
+</style>
 
 <script>
 import axios from "axios";
