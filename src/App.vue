@@ -23,7 +23,7 @@
       Modal
     },
     data() { 
-      return { 
+      return {
       } 
     }
   };

@@ -9,7 +9,7 @@
               <button type="button" class="close" aria-label="Close" @click="flight_zone_status = ''">
                 <span aria-hidden="true">×</span>
               </button>
-              <h4 class="alert-heading">No airports within 5 miles good to fly!</h4>
+              <h4 class="alert-heading">No airports within 5 miles, good to fly!</h4>
             </div>  
           </div>
           <div v-if="flight_zone_status === 'no_flight_zone'">

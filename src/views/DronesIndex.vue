@@ -73,7 +73,7 @@
      </modal>
     </div>
 
-    <div class="container">
+    <div v-if="user_id" class="container">
       
         <div class="agency-portfolio">
           <div class="container">
@@ -145,6 +145,8 @@ export default {
     };
   },
   created: function() {
+    window.scrollTo(0, 0);
+    this.user_id = localStorage.getItem("user_id");
     axios.get("/api/drones/").then(response => {
       this.drones = response.data;
     });

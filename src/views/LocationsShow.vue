@@ -171,6 +171,7 @@ export default {
     };
   },
   created: function() {
+    window.scrollTo(0, 0);
     this.user_id = localStorage.getItem("user_id");
     this.user_admin = localStorage.getItem("admin");
     axios.get("/api/locations/" + this.$route.params.id).then(response => {

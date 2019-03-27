@@ -279,6 +279,7 @@ export default {
                 };
   },
   created: function() {
+    window.scrollTo(0, 0);
     axios.get("/api/user_locations").then(response => {
       this.user_locations = response.data;
       this.user_locations.forEach(function(user_location) {

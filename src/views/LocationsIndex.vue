@@ -7,7 +7,7 @@
         </h5>     
         <p>
         <input class="map-form" v-model="searchAddress" type="text" placeholder="Search Airports" />
-        <input class="map-form" v-model="searchDistance" type="number" step="25" min="25" max="500"/>
+        <input class="map-form" v-model="searchDistance" type="number" step="25" min="25" max="500" placeholder="mile"/>
         <button class="map-form" @click="searchNearbyAirports()">Search</button>
         </p>
         <p>
@@ -57,7 +57,7 @@
         <div>{{ infoWindow.address }}</div>
         <div>{{ infoWindow.flight_zone_status.replace(/_/g,' ') }}</div>
         <button @click="getNearbyAirports(infoWindow.position.lat, infoWindow.position.lng)">Check Airports</button>
-        <input v-model="searchDistance" type="number" step="25" min="25" max="50" value="10" />
+        <input v-model="searchDistance" type="number" step="25" min="25" max="50" value="10" placeholder="Mi" />
         <button v-show="showing" @click="trackLocation(), showing = false">Track</button>
     </gmap-info-window>
     <GmapCircle
@@ -222,6 +222,7 @@ export default {
     };
   },
   created: function() {
+    window.scrollTo(0, 0);
     axios.get("/api/locations").then(response => {
       this.locations = response.data;
       this.locations.forEach(function(location) {
