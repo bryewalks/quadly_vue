@@ -1,24 +1,25 @@
 <template>
   <div class="locations-index">
-<!--       <button v-if="!airportShow" v-on:click="toggleAirports()" class="map-button">
-        Show Airports
-      </button>
-      <button v-if="airportShow" v-on:click="toggleAirports()" class="map-button">
-        Hide Airports
-      </button>  -->
-        <input v-model="searchAddress" type="text" placeholder="Search Airports" />
-        <input v-model="searchDistance" type="number" step="25" min="25" max="500"/>
-        <button @click="searchNearbyAirports()">Search</button>
-        <button @click="getNearbyAirports()">Nearby</button>
-        <button @click="clearAllAirports()">Clear</button>      
-        <button @click="openModal2()">Drop Pin</button>      
-      <span style="float:right">
-          <input v-model="filterAirports" type="radio" name="size" value="small"> Small</input>
-          <input v-model="filterAirports" type="radio" name="size" value="large"> Large</input> 
-          <input v-model="filterAirports" type="text" placeholder="Filter Results" />
-      </span>
-      <!-- <span style="float:left"> -->
-      <!-- </span> -->
+  <div class="index-alt-map">
+   <div class="location d-none d-md-block">
+        <h5>
+          <button class="map-form" @click="openModal2()">Drop Pin</button>
+        </h5>     
+        <p>
+        <input class="map-form" v-model="searchAddress" type="text" placeholder="Search Airports" />
+        <input class="map-form" v-model="searchDistance" type="number" step="25" min="25" max="500"/>
+        <button class="map-form" @click="searchNearbyAirports()">Search</button>
+        </p>
+        <p>
+        <button class="map-form" @click="clearAllAirports()">Clear</button>      
+        <button class="map-form" @click="getNearbyAirports()">Near Me</button>
+        </p>
+        <p>
+          <input class="map-form" v-model="filterAirports" type="text" placeholder="Filter Results" />
+          <input class="map-form" v-model="filterAirports" type="radio" name="size" value="small"> Small</input>
+          <input class="map-form" v-model="filterAirports" type="radio" name="size" value="large"> Large</input> 
+        </p>
+      </div>
     <GmapMap
       ref="gmap"
       @dragend="showCoords()"
@@ -26,7 +27,7 @@
       :zoom="10"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
-      :options="{styles: mapStyle}"
+      :options="mapOptions"
     >
     <GmapMarker
       :key="centerPosition.lat"
@@ -67,6 +68,7 @@
       :visible="true"
       @click="defineInfoWindow(airport)"/>
     </GmapMap>
+  </div>
     <div class="index-photography-cta overlay">
       <button @click="openModal()" class="scroll">
         Add a Location
@@ -77,7 +79,7 @@
       <div class="container">
         <form>
           <i class="fa fa-search"></i>
-          <input v-model:to="filterLocations" type="text" placeholder="Search help topics" />
+          <input v-model:to="filterLocations" type="text" placeholder="Search locations..." />
         </form>
 
         <div id="wrapper" class="container">
@@ -161,6 +163,13 @@ import MapNavBar from "../components/MapNavBar";
 export default {
   data: function() {
     return {
+      mapOptions: {
+                    styles: mapStyle,
+                    overviewMapControl: false,
+                    mapTypeControl: false,
+                    fullscreenControl: false,
+                    panControl: false
+                  },
       warning_message: "",
       newLocationName: "",
       newLocationAddress: "",

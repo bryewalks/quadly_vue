@@ -162,7 +162,6 @@ export default {
                     styles: mapStyle,
                     draggable: false,
                     fullscreenControl: false,
-                    // streetViewControl: false,
                     overviewMapControl: false,
                     mapTypeControl: false,
                     panControl: false,
