@@ -31,10 +31,8 @@ export default {
   },
   created: function() {
     this.user_id = localStorage.getItem("user_id");
-    console.log(this.user_id)
     axios.get("/api/drones/" + this.$route.params.id).then(response => {
       this.drone = response.data;
-      console.log(this.drone.user_id);
     });
   },
   methods: {

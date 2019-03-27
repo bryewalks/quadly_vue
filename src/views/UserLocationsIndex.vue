@@ -93,13 +93,12 @@
               </div>
              </div>
 
-
+             <div class="store-cart-header">
+               <div class="container">
+                 <h3 class="title-tracked-location"><strong>Visited Locations</strong></h3>
+               </div>
+             </div>
             <div class="cart table" v-if="statusCount('visited')">
-            <div class="store-cart-header">
-              <div class="container">
-                <h3 class="title-tracked-location"><strong>Visited Locations</strong></h3>
-              </div>
-            </div>
               <div class="container">
                 <div class="row cart-headers d-none d-md-flex">
                   <div class="col-md-3">
@@ -165,11 +164,11 @@
                     <form v-on:submit.prevent="submitReview()">
                       <div class="form-group">
                         <label>Summary </label>
-                        <input class='form-control' type='text' v-model="newLocationReviewSummary" placeholder="ex: Great place to fly!">
+                        <textarea class='form-control' v-model="newLocationReviewSummary" placeholder="ex: Great place to fly!"></textarea>
                       </div>
                       <div class="form-group">
                         <label>Warnings </label>
-                        <input class='form-control' type='text' v-model="newLocationReviewWarning" placeholder="ex: Beware of dogs!">
+                        <textarea class='form-control' v-model="newLocationReviewWarning" placeholder="ex: Beware of dogs!"></textarea>
                       </div>
                       <div class="form-group">
                         <star-rating id="star-form" v-model="newLocationReviewRating" v-bind:star-size="25" 
@@ -197,6 +196,10 @@
   </div>
 </template>
 <style>
+  .review-text-box {
+    height: 200px;
+  }
+
   .card-body {
     margin-bottom: 30px;
   }
@@ -244,7 +247,7 @@ export default {
       newLocationReviewSummary: "",
       newLocationReviewWarning: "",
       newLocationReviewUserLocationId: "",
-      newLocationReviewRating: "",
+      newLocationReviewRating: 0,
       errors: [],
       ip: {
             lat: 0,

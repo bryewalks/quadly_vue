@@ -9,7 +9,7 @@
               <button type="button" class="close" aria-label="Close" @click="flight_zone_status = ''">
                 <span aria-hidden="true">×</span>
               </button>
-              <h4 class="alert-heading">This location is good to fly!</h4>
+              <h4 class="alert-heading">No airports within 5 miles good to fly!</h4>
             </div>  
           </div>
           <div v-if="flight_zone_status === 'no_flight_zone'">
@@ -36,6 +36,9 @@
               <a v-on:click="submit()" class="btn-get-tickets" data-toggle="collapse" href="#current-weather">
                 Check Weather
               </a>
+              <router-link class="btn-get-tickets" :to="'/locations'">
+                All Locations
+              </router-link>
               <a v-on:click="checkFlightStatus()" class="btn-get-tickets">
                 Flight Zone Status
               </a>
@@ -49,6 +52,7 @@
 
         </div>
           <div class="collapse restaurant-gallery" id="current-weather">
+            <div class="container">
             <div class="card card-body" align="center">
               <div v-if="weather.good_to_fly">
                 <h3>Good Day to Fly in {{ ip.city }}!</h3>
@@ -56,14 +60,14 @@
               <div v-else>
                 <h3>DO NOT FLY</h3>
               </div>
-              <router-link v-bind:to="'/locations'">All Locations</router-link>
               <p>Wind Speed: {{ weather.wind_speed }}</p>
               <p>Temperature: {{ weather.temperature }}</p>
               <p>Visibility Miles: {{ weather.visibility_miles }}</p>
               <p>Max Gust Speed: {{ weather.max_gust_speed }}</p>
               <p>Chance of Precipitation: {{ weather.chance_of_precipitation }}</p>
               <p>Cloud Coverage: {{ weather.cloud_cover }}</p>          
-             </div>
+             </div>            
+            </div>
           </div>
       </div>
 </template>

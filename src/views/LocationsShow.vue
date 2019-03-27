@@ -7,7 +7,7 @@
           <p>
             {{ location.address }}
           </p>
-          <p>
+          <p :class="button">
             {{ location.flight_zone_status.replace(/_/g,' ') }}
           </p>
         </div>
@@ -72,7 +72,7 @@
     <div class="agency-alt-hero">
       <div class="container">
         <h3 class="customFadeInUp">
-          <h2 v-if="location.location_reviews.length > 0">Reviews</h2>
+          <h2 v-if="location.location_reviews.length > 0">Location Reviews</h2>
           <h2 v-else>This Location Has No Reviews.</h2>
         </h3>
       </div>
@@ -102,16 +102,16 @@
    </div>
 
    <div v-if="location.location_reviews.length > 0" class="container">
-   <div class="support-hero">
+   <div class="support-hero" style="padding-top: 30px;">
      <div class="container">
        <div class="topics clearfix">
          <div v-for="(location_reviews, index) in formattedReviews()" :key="index" class="row">
            <div v-for="location_review in location_reviews" class="col-lg-3">
              <div class="topic">                
-              <star-rating v-model="location_review.rating" v-bind:star-size="25" read-only></star-rating>
-              <i class="icon-linegraph"></i>
-              <p>Review Summary: {{ location_review.summary }}</p>
-              <p>Location Warnings: {{ location_review.warning }}</p>
+              <i class="icon-pencil" style="padding-bottom: 20px"></i>
+              <p>{{ location_review.summary }}</p>
+              <p>{{ location_review.warning }}</p>
+              <star-rating v-model="location_review.rating" v-bind:star-size="25" read-only :show-rating="false" style="padding-bottom: 20px;"></star-rating>
               <button v-if="user_id == location_review.user_id" @click="destroyReview(location_review, index)" class="btn btn-danger">Delete Review</button>
              </div>
            </div>
@@ -158,6 +158,7 @@ export default {
       weather: {},
       errors: [],
       modal: false,
+      button: "",
       mapOptions: {
                     styles: mapStyle,
                     draggable: false,
@@ -172,15 +173,26 @@ export default {
   created: function() {
     this.user_id = localStorage.getItem("user_id");
     this.user_admin = localStorage.getItem("admin");
-    console.log(this.user_admin);
     axios.get("/api/locations/" + this.$route.params.id).then(response => {
       this.location = response.data;
+      if (this.location.flight_zone_status === "no_flight_zone") {
+        this.button = "badge badge-danger"; 
+      } else if (this.location.flight_zone_status === "requires_authorization") {
+        this.button = "badge badge-warning";
+      } else {
+        this.button = "badge badge-success";
+      }
     });
   },
   components: {
                 Modal
   },
   methods: {
+    buttonColor: function() {
+      if (this.location.flight_zone_status == no_flight_zone) {
+        this.button = "badge badge-danger"; 
+      }
+    },
     submitStatus: function(inputStatus) {
       var params = {
                     user_id: this.user_id,

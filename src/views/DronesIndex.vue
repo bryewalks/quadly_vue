@@ -148,7 +148,6 @@ export default {
     axios.get("/api/drones/").then(response => {
       this.drones = response.data;
     });
-    console.log(this.modal1)
   },
   components: {
                 Modal

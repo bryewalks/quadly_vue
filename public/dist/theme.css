@@ -36687,7 +36687,7 @@ body {
   position: relative;
   background-image: url("../notebook.jpg");
   background-size: cover;
-  background-position: center top;
+  background-position: 49% 9%;
 }
 @media (max-width: 767px) {
   .agency-alt-hero {
