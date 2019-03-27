@@ -42,7 +42,7 @@
            <div class="cart table" v-if="statusCount('to_visit')">
               <div class="store-cart-header">
                 <div class="container">
-                  <h3>Locations To Visit</h3>
+                  <h3 class="title-tracked-location"><strong>Locations To Visit</strong></h3>
                 </div>
               </div>
              <div class="container">
@@ -97,7 +97,7 @@
             <div class="cart table" v-if="statusCount('visited')">
             <div class="store-cart-header">
               <div class="container">
-                <h3>Visited Locations</h3>
+                <h3 class="title-tracked-location"><strong>Visited Locations</strong></h3>
               </div>
             </div>
               <div class="container">
@@ -161,19 +161,20 @@
                     <li v-for="error in errors"> {{ error }} </li>
                   </ul>
 
-                  <div class="container">
+                  <div class="container" id="review-form">
                     <form v-on:submit.prevent="submitReview()">
                       <div class="form-group">
-                        <label>Summary: </label>
-                        <input class='form-control' type='text' v-model="newLocationReviewSummary" placeholder="ex: Betsy">
+                        <label>Summary </label>
+                        <input class='form-control' type='text' v-model="newLocationReviewSummary" placeholder="ex: Great place to fly!">
                       </div>
                       <div class="form-group">
-                        <label>Warning: </label>
-                        <input class='form-control' type='text' v-model="newLocationReviewWarning" placeholder="ex: yes">
+                        <label>Warnings </label>
+                        <input class='form-control' type='text' v-model="newLocationReviewWarning" placeholder="ex: Beware of dogs!">
                       </div>
                       <div class="form-group">
-                        <label>Rating: </label>
-                        <input class='form-control' type='text' v-model="newLocationReviewRating" placeholder="ex: yes">
+                        <star-rating id="star-form" v-model="newLocationReviewRating" v-bind:star-size="25" 
+                                                                       :max-rating="5"
+                                                                       :show-rating="false"></star-rating>
                       </div>       
                       <input type="submit" value="Review Location" class="btn btn-primary">
                     </form>
@@ -195,6 +196,27 @@
     </div>    
   </div>
 </template>
+<style>
+  .card-body {
+    margin-bottom: 30px;
+  }
+
+  .title-tracked-location {
+    text-align: center;
+    margin: 40px;
+  }
+
+  #review-form {
+    align-content: center;
+    text-align: center;
+    padding-bottom: 50px;
+  }
+
+  #star-form {
+    padding-left: 43.5%;
+    padding-right: 50%;
+  }
+</style>
 
 <script>
 import axios from "axios";

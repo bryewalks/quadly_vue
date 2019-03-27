@@ -7,11 +7,11 @@
      <modal v-if="modal1">
        <h3 slot="header" class="modal-title">
          New Drone
+       </h3>
+       <div align="center" slot="body">
        <ul>
          <li v-for="error in errors"> {{ error }} </li>
        </ul>
-       </h3>
-       <div align="center" slot="body">
         <div class="container">
           <form v-on:submit.prevent="submit()">
             <div class="form-group">
@@ -25,16 +25,14 @@
                 <option value="fixable">Fixable</option>
                 <option value="trash">Trash</option>
               </select>
-            </div>
-            <div class="form-group">
-              <label>Notes: </label>
-              <input class='form-control' type='text' v-model="newDroneNotes" placeholder="ex: Fix something">
-            </div>        
+            </div>      
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="true" v-model="newDroneFavorite">
               <label class="form-check-label" for="inlineCheckbox1">Favorite?</label>
             </div>
-            <input type="submit" value="Add Drone" class="btn btn-primary">
+            <div>
+              <input type="submit" value="Add Drone" class="btn btn-primary"> 
+            </div>
           </form>
         </div>              
           <button class="btn btn-danger" @click="closeModal1()">Close</button>  
@@ -55,22 +53,17 @@
               <input class='form-control' type='text' v-model="editDrone.name" placeholder="ex: Betsy">
             </div>
             <div class="form-group">
-              <label>Favorite: </label>
-              <input class='form-control' type='text' v-model="editDrone.favorite" placeholder="ex: yes">
-            </div>
-            <div class="form-group">
               <label>Status: </label>
               <select v-model="editDrone.status" class="form-control" id="status">
                 <option value="flyable">Flyable</option>
                 <option value="fixable">Fixable</option>
                 <option value="trash">Trash</option>
               </select>
-<!--               <input class='form-control' type='text' v-model="editDrone.status" placeholder="ex: flyable">
- -->            </div>
             <div class="form-group">
-              <label>Notes: </label>
-              <input class='form-control' type='text' v-model="editDrone.notes" placeholder="ex: Fix something">
-            </div>        
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="true" v-model="editDrone.favorite">
+              <label class="form-check-label" for="inlineCheckbox1">Favorite?</label>
+            </div>
+            </div>     
             <input @click="closeModal2()" type="submit" value="Edit Drone" class="btn btn-primary">
             <button class="btn btn-warning" @click="closeModal2(), destroyDrone(editDrone)">Delete Drone</button>  
           </form>
@@ -173,12 +166,14 @@ export default {
     },
     closeModal1: function() {
       this.modal1 = false;
+      this.errors = [];
     },
     openModal2: function() { 
       this.modal2 = true; 
     },
     closeModal2: function() {
       this.modal2 = false;
+      this.errors = [];
     },
     submit: function() {
       var params = {

@@ -78,8 +78,8 @@
       </div>
     </div>
 
-    <div id="wrapper" class="container">
-     <modal v-if="modal">
+    <div v-if="modal" id="wrapper" class="container">
+     <modal>
        <h3 slot="header" class="modal-title">
           Weather Conditions
        </h3>

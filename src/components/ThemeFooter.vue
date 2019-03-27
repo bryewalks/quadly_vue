@@ -1,84 +1,53 @@
 <template>
   <footer class="footer" id="footer">
     <div class="container">
+      <div class="container">
+        
       <div class="row">
         <div class="col-md-4">
           <div class="title">
-            About spacial
+            Authorization
           </div>
           <ul class="menu">
             <li>
-              <a href="#">Home Pages</a>
+              <router-link :to="'/signup'">
+                <i class="fa fa-user-plus"></i>
+                Sign Up
+              </router-link>
             </li>
             <li>
-              <a href="#">Theme Features</a>
+              <router-link :to="'/login'">
+                <i class="fa fa-user"></i>
+                Login
+              </router-link>
             </li>
             <li>
-              <a href="#">Services</a>
-            </li>
-            <li>
-              <a href="#">StoreFront</a>
-            </li>
-            <li>
-              <a href="#">Portfolio</a>
+              <router-link :to="'/logout'">
+                <i class="fa fa-sign-out"></i>
+                Logout
+              </router-link>
             </li>
           </ul>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-8" style="text-align: right;">
           <div class="title">
-            Connect with us
+            Quadly
           </div>
           <ul class="menu">
             <li>
-              <a href="#">
-                <i class="fa fa-instagram"></i>
-                Instagram
-              </a>
+              <router-link :to="'/drones'">Drones</router-link>
             </li>
             <li>
-              <a href="#">
-                <i class="fa fa-twitter"></i>
-                Twitter
-              </a>
+              <router-link :to="'/locations'">All Locations</router-link>
             </li>
             <li>
-              <a href="#">
-                <i class="fa fa-dribbble"></i>
-                Dribbble
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-facebook"></i>
-                Facebook
-              </a>
+              <router-link :to="'/userlocations'">Tracked Locations</router-link>
             </li>
           </ul>
-        </div>
-        <div class="col-md-4 newsletter">
-          <div class="title">
-            Get awesome updates
-          </div>
-          <p>
-            Enter your email address for news and product launches in the Awesome Space.
-          </p>
-
-          <form class="newsletter-form" autocomplete="off">
-            <input type="email" id="mc-email" class="form-control" placeholder="Email address" required />
-
-            <button type="submit">
-              <i class="fa fa-chevron-right"></i>
-            </button>
-            <label for="mc-email" class="text-white newsletter-feedback mt-3"></label>
-          </form>
         </div>
       </div>
+      </div>
       <div class="bottom">
-        <ul>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Legal</a></li>
-          <li><a href="#">Language</a></li>
-        </ul>
       </div>
     </div>
   </footer>

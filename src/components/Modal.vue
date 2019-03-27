@@ -1,6 +1,6 @@
 <template> 
 <transition name="modal">
- <div class="modal modal-mask" style="display: block">
+ <div class="modal modal-mask" style="display: block;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -32,6 +32,10 @@
     display: table;
     transition: opacity .3s ease;
     overflow-y: scroll;
+  }
+
+  .modal-header {
+    margin: 0 auto;
   }
 </style>
 

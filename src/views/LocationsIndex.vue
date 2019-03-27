@@ -15,7 +15,7 @@
         <button class="map-form" @click="getNearbyAirports()">Near Me</button>
         </p>
         <p>
-          <input class="map-form" v-model="filterAirports" type="text" placeholder="Filter Results" />
+          <input class="map-form" v-model="filterAirports" type="text" placeholder="Filter Results" /><br></br>
           <input class="map-form" v-model="filterAirports" type="radio" name="size" value="small"> Small</input>
           <input class="map-form" v-model="filterAirports" type="radio" name="size" value="large"> Large</input> 
         </p>
