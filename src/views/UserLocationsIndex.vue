@@ -16,7 +16,7 @@
       :position="user_location.location.position"
       :draggable="false"
       v-on:click="defineInfoWindow(user_location, index)"
-      :icon="{ url: require('../../public/drone-map.png')}"
+      :icon="{ url: require('../../public/images/icons/map-icon.png')}"
     />
     </GmapCluster>
     <gmap-info-window

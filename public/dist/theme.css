@@ -36685,9 +36685,9 @@ body {
 .agency-alt-hero {
   min-height: 500px;
   position: relative;
-  background-image: url("../images/unsplash/breather-187923.jpg");
+  background-image: url("../notebook.jpg");
   background-size: cover;
-  background-position: center center;
+  background-position: center top;
 }
 @media (max-width: 767px) {
   .agency-alt-hero {
