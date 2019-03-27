@@ -3,71 +3,122 @@
     <div class="index-photography-drone">
     </div>
 
-
-
-<div class="container">
-  
-    <div class="agency-portfolio">
-      <div class="container">
-        <h2>
-          Your Drones
-        </h2>
-        <div class="blog-posts-grid">
-          <div class="container">
-            <div class="post" v-for="drone in drones">
-              <div class="bg" style="background-image:url('../../drone-side.jpg');">
-              </div>
-              <router-link v-bind:to="'/drones/' + drone.id + '/edit/'" class="info">
-                <span class="title">{{ drone.name }}</span>
-                <span class="author">{{ drone.status }}</span>
-                <span class="date" v-if="drone.favorite"><star-rating :max-rating="1"
-                                                                      read-only
-                                                                      :rating="1" 
-                                                                      :show-rating="false"></star-rating></span>
-              </router-link>
+    <div id="wrapper" class="container">
+     <modal v-if="modal1">
+       <h3 slot="header" class="modal-title">
+         New Drone
+       <ul>
+         <li v-for="error in errors"> {{ error }} </li>
+       </ul>
+       </h3>
+       <div align="center" slot="body">
+        <div class="container">
+          <form v-on:submit.prevent="submit()">
+            <div class="form-group">
+              <label>Drone Name: </label>
+              <input class='form-control' type='text' v-model="newDroneName" placeholder="ex: Betsy">
             </div>
-              <h2><router-link class="btn btn-success"  to="/drones/new"> Add Drone</router-link></h2>
-          </div>
-        </div>
-      </div>
+            <div class="form-group">
+              <label for="status">Drone Condition</label>
+              <select v-model="newDroneStatus" class="form-control" id="status">
+                <option value="flyable">Flyable</option>
+                <option value="fixable">Fixable</option>
+                <option value="trash">Trash</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Notes: </label>
+              <input class='form-control' type='text' v-model="newDroneNotes" placeholder="ex: Fix something">
+            </div>        
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="true" v-model="newDroneFavorite">
+              <label class="form-check-label" for="inlineCheckbox1">Favorite?</label>
+            </div>
+            <input type="submit" value="Add Drone" class="btn btn-primary">
+          </form>
+        </div>              
+          <button class="btn btn-danger" @click="closeModal1()">Close</button>  
+       </div>
+     </modal>
     </div>
-</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-
+    <div id="wrapper" class="container">
+     <modal v-if="modal2">
+       <h3 slot="header" class="modal-title">
+         Edit Drone
+       </h3>
+       <div align="center" slot="body">
+        <div class="container">
+          <form v-on:submit.prevent="submitEdit()">
+            <div class="form-group">
+              <label>Drone Name: </label>
+              <input class='form-control' type='text' v-model="editDrone.name" placeholder="ex: Betsy">
+            </div>
+            <div class="form-group">
+              <label>Favorite: </label>
+              <input class='form-control' type='text' v-model="editDrone.favorite" placeholder="ex: yes">
+            </div>
+            <div class="form-group">
+              <label>Status: </label>
+              <select v-model="editDrone.status" class="form-control" id="status">
+                <option value="flyable">Flyable</option>
+                <option value="fixable">Fixable</option>
+                <option value="trash">Trash</option>
+              </select>
+<!--               <input class='form-control' type='text' v-model="editDrone.status" placeholder="ex: flyable">
+ -->            </div>
+            <div class="form-group">
+              <label>Notes: </label>
+              <input class='form-control' type='text' v-model="editDrone.notes" placeholder="ex: Fix something">
+            </div>        
+            <input @click="closeModal2()" type="submit" value="Edit Drone" class="btn btn-primary">
+            <button class="btn btn-warning" @click="closeModal2(), destroyDrone(editDrone)">Delete Drone</button>  
+          </form>
+        </div>              
+        <button class="btn btn-danger" @click="closeModal2()">Close</button>  
+       </div>
+     </modal>
+    </div>
 
     <div class="container">
-      <h1>Your Drones</h1>
-      <div v-for="drone in drones">     
-        <h2><router-link v-bind:to="'/drones/' + drone.id">{{ drone.name }}</router-link></h2>
-        <p>Favorite: {{ drone.favorite }}</p>
-        <p>Status: {{ drone.status }}</p>
-        <p>Notes: {{ drone.notes }}</p>
-      </div>
-      </div> -->
+      
+        <div class="agency-portfolio">
+          <div class="container">
+            <h2>
+              Your Drones
+            </h2>
+            <div v-if="drones.length > 0" class="blog-posts-grid">
+              <div class="container">
+                <div class="post" v-for="(drone, index) in drones" :key="index">
+                  <div class="bg" style="background-image:url('../../drone-side.jpg');">
+                  </div>
+                  <div @click="defineEditDrone(drone, index), openModal2()" class="info">
+                   <span class="title">{{ drone.name }}</span>
+                    <span class="author">{{ drone.status }}</span>
+                    <span class="date" v-if="drone.favorite"><star-rating :max-rating="1"
+                                                                          read-only
+                                                                          :rating="1" 
+                                                                          :show-rating="false"></star-rating></span>
+                  </div>
+                </div>
+                  <h2><button @click="openModal1()" class="btn btn-success"> Add Drone</button></h2>
+              </div>
+            </div>
+            <div v-else>
+              <h2>Add some drones to your collection...</h2>
+              <h2><button @click="openModal1()" class="btn btn-success"> Add Drone</button></h2>
+            </div>
+          </div>
+        </div>
+    </div>
+
     </div>  
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Modal from "../components/Modal";
 
 export default {
   data: function() {
@@ -81,22 +132,91 @@ export default {
                 notes: ""
 
       }],
-      user_id: ""
+      editDrone: {
+                id: "",
+                user_id: "",
+                name: "",
+                favorite: "",
+                status: "",
+                notes: "",
+                index: ""
+      },
+      newDroneName: "",
+      newDroneFavorite: "",
+      newDroneStatus: "",
+      newDroneNotes: "",
+      errors: [],
+      user_id: "",
+      modal1: false,
+      modal2: false,
     };
   },
   created: function() {
     axios.get("/api/drones/").then(response => {
       this.drones = response.data;
     });
+    console.log(this.modal1)
+  },
+  components: {
+                Modal
   },
   methods: {
     destroyDrone: function(inputDrone) {
       axios.delete("/api/drones/" + inputDrone.id)
         .then(response => {
           console.log("Success", response.data);
-          this.$router.push("/drones");
+          this.drones.splice(inputDrone.index, 1);
         });
     },
+    openModal1: function() { 
+      this.modal1 = true; 
+    },
+    closeModal1: function() {
+      this.modal1 = false;
+    },
+    openModal2: function() { 
+      this.modal2 = true; 
+    },
+    closeModal2: function() {
+      this.modal2 = false;
+    },
+    submit: function() {
+      var params = {
+                    name: this.newDroneName,
+                    favorite: this.newDroneFavorite,
+                    status: this.newDroneStatus,
+                    notes: this.newDroneNotes
+                    };
+                    
+      axios.post("/api/drones/", params)
+        .then(response => {
+          this.drones.push(response.data);
+          this.closeModal1();
+          this.errors = [];
+        }).catch(error => {
+          this.errors = error.response.data.errors;
+        });
+    },
+    defineEditDrone: function(inputDrone, inputIndex) {
+      this.editDrone = inputDrone;
+      this.editDrone.index = inputIndex;
+    },
+    submitEdit: function() {
+      var params = {
+                    name: this.editDrone.name,
+                    favorite: this.editDrone.favorite,
+                    status: this.editDrone.status,
+                    notes: this.editDrone.notes
+                    };
+                    
+      axios.patch("/api/drones/" + this.editDrone.id, params)
+        .then(response => {
+          // this.drones.splice(this.editDrone.index, 1)
+          // this.drones.push(response.data);
+        }).catch(error => {
+          this.errors = error.response.data.errors;
+        });
+    }
   }
 };
 </script>

@@ -5,7 +5,7 @@
       :zoom="10"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
-      :options="{styles: mapStyle}"
+      :options="mapOptions"
     >
     <GmapCluster
       :grid-size="50"
@@ -230,7 +230,13 @@ export default {
             city: "",
             regionName: ""
       },
-      mapStyle: mapStyle,
+      mapOptions: {
+                    styles: mapStyle,
+                    overviewMapControl: false,
+                    mapTypeControl: false,
+                    fullscreenControl: false,
+                    panControl: false
+                  },
       infoWindow: {
         open: false,
         id: "",
