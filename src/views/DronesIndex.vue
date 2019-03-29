@@ -88,7 +88,7 @@
                   <div @click="defineEditDrone(drone, index), openModal2()" class="info">
                    <span class="title">{{ drone.name }}</span>
                     <span class="author">{{ drone.status }}</span>
-                    <span class="date" v-if="drone.favorite"><star-rating :max-rating="1"
+                    <span class="date" v-if="drone.favorite === true"><star-rating :max-rating="1"
                                                                           read-only
                                                                           :rating="1" 
                                                                           :show-rating="false"></star-rating></span>
@@ -129,7 +129,7 @@ export default {
                 id: "",
                 user_id: "",
                 name: "",
-                favorite: "",
+                favorite: false,
                 status: "",
                 notes: "",
                 index: ""

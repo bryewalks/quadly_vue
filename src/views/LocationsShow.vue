@@ -109,7 +109,7 @@
            <div v-for="location_review in location_reviews" class="col-lg-3">
              <div class="topic">                
               <i class="icon-pencil" style="padding-bottom: 20px"></i>
-              <p>{{ location_review.summary }}</p>
+              <p>"{{ location_review.summary }}"</p>
               <p>{{ location_review.warning }}</p>
               <star-rating v-model="location_review.rating" v-bind:star-size="25" read-only :show-rating="false" style="padding-bottom: 20px;"></star-rating>
               <button v-if="user_id == location_review.user_id" @click="destroyReview(location_review, index)" class="btn btn-danger">Delete Review</button>
@@ -234,7 +234,7 @@ export default {
        axios.delete("/api/location_reviews/" + inputLocationReview.id)
          .then(response => {
            console.log("Success", response.data);
-           this.location.location_reviews.splice(inputIndex, 1);
+           this.location.location_reviews.splice((inputIndex - 1), 1);
          });
      },
      destroyLocation: function() {
