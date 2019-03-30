@@ -73,7 +73,7 @@
      </modal>
     </div>
 
-    <div class="container">
+    <div v-if="user_id" class="container">
       
         <div class="agency-portfolio">
           <div class="container">
@@ -88,7 +88,7 @@
                   <div @click="defineEditDrone(drone, index), openModal2()" class="info">
                    <span class="title">{{ drone.name }}</span>
                     <span class="author">{{ drone.status }}</span>
-                    <span class="date" v-if="drone.favorite"><star-rating :max-rating="1"
+                    <span class="date" v-if="drone.favorite === true"><star-rating :max-rating="1"
                                                                           read-only
                                                                           :rating="1" 
                                                                           :show-rating="false"></star-rating></span>
@@ -104,6 +104,13 @@
           </div>
         </div>
     </div>
+<!--     <div v-else>
+      <div class="agency-portfolio">
+        <div class="container">
+          Login to add drones to your collection
+        </div>
+      </div>
+    </div> -->
 
     </div>  
   </div>
@@ -129,7 +136,7 @@ export default {
                 id: "",
                 user_id: "",
                 name: "",
-                favorite: "",
+                favorite: false,
                 status: "",
                 notes: "",
                 index: ""
@@ -145,10 +152,11 @@ export default {
     };
   },
   created: function() {
+    window.scrollTo(0, 0);
+    this.user_id = localStorage.getItem("user_id");
     axios.get("/api/drones/").then(response => {
       this.drones = response.data;
     });
-    console.log(this.modal1)
   },
   components: {
                 Modal

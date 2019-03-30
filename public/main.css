@@ -138,6 +138,47 @@
   background: #6690e4;
 }
 
+.index-photography-home {
+  height: 410px;
+  /*background: url("../images/unsplash/aerial.jpg") no-repeat 50% 20%;*/
+  background-size: cover;
+  text-align: center;
+  padding-top: 120px;
+}
+.index-photography-home h2 {
+  color: #fff;
+  font-size: 32px;
+  letter-spacing: .5px;
+}
+@media (max-width: 767px) {
+  .index-photography-home h2 {
+    font-size: 27px;
+    line-height: 35px;
+  }
+}
+.index-photography-home button {
+  background: #88bee0;
+  box-shadow: 0 5px 20px 3px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: #fff;
+  display: inline-block;
+  margin-top: 50px;
+  padding: 20px 35px;
+  font-size: 13px;
+  border-radius: 3px;
+  text-decoration: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.index-photography-home button:hover {
+  background: #6690e4;
+}
+
 .index-photography-drone {
   height: 410px;
   background: url("/user-drones.jpg") no-repeat 50% 20%;
@@ -227,6 +268,83 @@
 .table-content {
   margin-top: 25px;
   margin-bottom: 25px;
+}
+
+.account-page {
+  margin-top: 40px;
+}
+.account-page .breadcrumb {
+  background: none;
+  padding: 0;
+}
+.account-page .account-wrapper {
+  margin-top: 40px;
+}
+.account-page .nav-tabs li:not(.active) a:hover {
+  background: #fdfdfd;
+}
+@media (max-width: 767px) {
+  .account-page .nav-tabs a {
+    padding: 10px 12px;
+  }
+}
+.account-page .tab-content {
+  padding: 35px 10px;
+}
+@media (max-width: 767px) {
+  .account-page .tab-header h4 {
+    font-size: 15px;
+  }
+}
+@media (max-width: 767px) {
+  .account-page .custom-select {
+    width: 150px;
+  }
+}
+.account-page table {
+  margin-top: 30px;
+}
+.account-page table td {
+  padding: 12px 8px !important;
+}
+
+.ecommerce-sign-up-form {
+  width: 440px;
+  margin: 40px auto;
+}
+@media (max-width: 767px) {
+  .ecommerce-sign-up-form {
+    width: auto;
+  }
+}
+.ecommerce-sign-up-form h1 {
+  font-size: 31px;
+  text-align: center;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+.ecommerce-sign-up-form .form-action {
+  text-align: center;
+  margin-top: 35px;
+}
+.ecommerce-sign-up-form .form-action button {
+  width: 100%;
+  padding: 13px 23px;
+}
+.ecommerce-sign-up-form .checkbox {
+  margin-top: 20px;
+}
+.ecommerce-sign-up-form .form-bottom {
+  text-align: center;
+  margin-top: 40px;
+  color: #777;
+}
+.ecommerce-sign-up-form .form-bottom a {
+  margin-left: 5px;
+}
+.ecommerce-sign-up-form .form-bottom .btn-forgot-password {
+  display: block;
+  margin-bottom: 40px;
 }
 
 body {
