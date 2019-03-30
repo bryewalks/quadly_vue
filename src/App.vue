@@ -13,6 +13,8 @@
   import ThemeFooter from "./components/ThemeFooter";
   import Modal from "./components/Modal";
   import MapNavBar from "./components/MapNavBar";
+  import { eventBus } from './main.js';
+
 
   export default {
     name: "App",
@@ -24,7 +26,12 @@
     },
     data() { 
       return {
+        user_id: ""
       } 
-    }
+    },
+    mounted: function() {
+      this.user_id = localStorage.getItem("user_id");
+      eventBus.$emit('currentUser', this.user_id );
+    },
   };
 </script>

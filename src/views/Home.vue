@@ -43,7 +43,7 @@
                 Flight Zone Status
               </a>
               <p v-if="ip" class="m-0">
-                {{ ip.regionName }}
+                {{ ip.region }}
               </p>
               <p>
               </p>
@@ -87,27 +87,25 @@ export default {
       weather: {},
       user_id: "",
       ip: {
-            lat: 0,
-            lon: 0,
+            latitude: 0,
+            longitude: 0,
             city: "",
-            regionName: ""
+            region: ""
       },
       flight_zone_status: "",
       errors: [],
     };
   },
   created: function() {
-    this.user_id = localStorage.getItem("user_id");
-    eventBus.$emit('currentUser', this.user_id )
-    fetch('http://ip-api.com/json/').then(response => 
+    fetch('https://ipapi.co/json/').then(response => 
       response.json()).then(data => 
         this.ip = data);
   },
   methods: {
     checkFlightStatus: function() {
       var params = {
-                    search_lat: this.ip.lat,
-                    search_lng: this.ip.lon
+                    search_lat: this.ip.latitude,
+                    search_lng: this.ip.longitude
                     };
       axios.post("/api/locations/", params)
         .then(response => {
@@ -116,8 +114,8 @@ export default {
       },
     submit: function() {
       var params = {
-                    search_lat: this.ip.lat,
-                    search_lng: this.ip.lon
+                    search_lat: this.ip.latitude,
+                    search_lng: this.ip.longitude
                     };
                     
       axios.post("/api/weathers/", params)
@@ -125,6 +123,10 @@ export default {
           this.weather = response.data;
         })
     }    
+  },
+  mounted: function() {
+    this.user_id = localStorage.getItem("user_id");
+    eventBus.$emit('currentUser', this.user_id );
   }
 };
 </script>

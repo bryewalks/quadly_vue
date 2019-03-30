@@ -30,7 +30,7 @@
     <GmapMap
       ref="gmap"
       @dragend="showCoords()"
-      :center="{lat: ip.lat, lng: ip.lon}"
+      :center="{lat: parseFloat(ip.latitude), lng: parseFloat(ip.longitude)}"
       :zoom="8"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
@@ -185,7 +185,7 @@ export default {
             lat: 0,
             lon: 0,
             city: "",
-            regionName: ""
+            region: ""
       },
       locationFilter: "",
       locations: [{
@@ -241,7 +241,7 @@ export default {
       });
     })
 
-    fetch('http://ip-api.com/json/').then(response => 
+    fetch('https://ipapi.co/json/').then(response => 
       response.json()).then(data =>
         this.ip = data);
   },
@@ -283,8 +283,8 @@ export default {
     },
     checkFlightStatus: function() {
       var params = {
-                    latitude: this.ip.lat,
-                    longitude: this.ip.lon
+                    latitude: this.ip.latitude,
+                    longitude: this.ip.longitude
                     };
       axios.post("/api/locations/", params)
         .then(response => {
@@ -294,8 +294,8 @@ export default {
     },
     getNearbyAirports: function(lat, lng) {
       var params = {
-                    latitude: lat || this.ip.lat,
-                    longitude: lng || this.ip.lon,
+                    latitude: lat || this.ip.latitude,
+                    longitude: lng || this.ip.longitude,
                     distance: this.searchDistance
                     };
       var self = this

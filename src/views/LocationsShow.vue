@@ -33,12 +33,18 @@
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <a v-on:click="submitStatus(visited)">
-            <h4 style="color: #518dc3;">
-              <i class="ion-map"></i>
-              Visited
-            </h4>
-            </a>
+              <a v-if="user_id == true" v-on:click="submitStatus(visited)">
+                <h4 style="color: #518dc3;">
+                  <i class="ion-map"></i>
+                  Visited
+                </h4>
+              </a>         
+              <router-link v-else :to="'/login'">
+                <h4 style="color: #518dc3;">
+                  <i class="ion-map"></i>
+                  Visited
+                </h4>
+              </router-link>     
             <p>
               Mark this location as visited.
             </p>
@@ -55,12 +61,18 @@
             </p>
           </div>
           <div class="col-md-4">
-            <a v-on:click="submitStatus(toVisit)">
-            <h4 style="color: #a34dd6;">
-              <i class="ion-ios-bookmarks"></i>
-              Track
-            </h4>
+            <a v-if="user_id == true" v-on:click="submitStatus(toVisit)">
+              <h4 style="color: #a34dd6;">
+                <i class="ion-ios-bookmarks"></i>
+                Track
+              </h4>
             </a>
+            <router-link v-else :to="'/login'">
+              <h4 style="color: #a34dd6;">
+                <i class="ion-ios-bookmarks"></i>
+                Track
+              </h4>
+            </router-link>
             <p>
               Add this location to your tracked locations.
             </p>
@@ -126,11 +138,13 @@
 <script>
 import axios from "axios";
 import Modal from "../components/Modal";
+import { eventBus } from '../main.js';
 
 
 export default {
   data: function() {
     return {
+      currentUser: "",
       location: {
                   id: "",
                   flight_zone_status: "",

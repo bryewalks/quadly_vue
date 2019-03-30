@@ -1,7 +1,7 @@
 <template>
   <div class="user-locations-index">
     <GmapMap
-      :center="{lat: ip.lat, lng: ip.lon}"
+      :center="{lat: ip.latitude, lng: ip.longitude}"
       :zoom="10"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
@@ -250,10 +250,10 @@ export default {
       newLocationReviewRating: 0,
       errors: [],
       ip: {
-            lat: 0,
-            lon: 0,
+            latitude: 0,
+            longitude: 0,
             city: "",
-            regionName: ""
+            region: ""
       },
       mapOptions: {
                     styles: mapStyle,
@@ -288,7 +288,7 @@ export default {
       });
     });
 
-    fetch('http://ip-api.com/json/').then(response => 
+    fetch('https://ipapi.co/json/').then(response => 
       response.json()).then(data =>
         this.ip = data);
   },

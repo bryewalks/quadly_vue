@@ -35,6 +35,7 @@ export default new Router({
     // { path: '/locationreviews/new', name: 'location-reviews-new', component: LocationReviewsNew },
     // { path: '/locationreviews/:id', name: 'location-reviews-show', component: LocationReviewsShow },
     { path: '/drones', name: 'drones-index', component: DronesIndex },
+    { path: '*', redirect: '/' }
     // { path: '/drones/new', name: 'drones-new', component: DronesNew },
     // { path: '/drones/:id', name: 'drones-show', component: DronesShow },
     // { path: '/drones/:id/edit', name: 'drones-edit', component: DronesEdit },
