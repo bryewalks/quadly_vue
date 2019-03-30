@@ -1,30 +1,37 @@
 <template>
   <div class="locations-index">
-  <div class="index-alt-map">
-   <div class="location d-none d-md-block">
-        <h5>
-          <button class="map-form" @click="openModal2()">Drop Pin</button>
-        </h5>     
-        <p>
-        <input class="map-form" v-model="searchAddress" type="text" placeholder="Search Airports" />
-        <input class="map-form" v-model="searchDistance" type="number" step="25" min="25" max="500" placeholder="mile"/>
-        <button class="map-form" @click="searchNearbyAirports()">Search</button>
-        </p>
-        <p>
-        <button class="map-form" @click="clearAllAirports()">Clear</button>      
-        <button class="map-form" @click="getNearbyAirports()">Near Me</button>
-        </p>
-        <p>
-          <input class="map-form" v-model="filterAirports" type="text" placeholder="Filter Results" /><br></br>
-          <input class="map-form" v-model="filterAirports" type="radio" name="size" value="small"> Small</input>
-          <input class="map-form" v-model="filterAirports" type="radio" name="size" value="large"> Large</input> 
-        </p>
+    <div class="index-alt-map">
+      <div class="location d-none d-md-block">
+        <!-- <div v-if="user_id">  -->
+          <h4>Locate Airports</h4>
+          <h5 v-if="user_id">
+            <button class="map-form" @click="openModal2()">Drop Pin</button>
+          </h5>     
+          <p>
+          <input class="map-form" v-model="searchAddress" type="text" placeholder="Address" />
+          <input class="map-form" v-model="searchDistance" type="number" step="25" min="25" max="500" placeholder="mile">
+          <span>Miles</span></input>
+          <br><button class="map-form" @click="searchNearbyAirports()">Search</button>
+          </p>
+          <p>
+          <button class="map-form" @click="clearAllAirports()">Clear</button>      
+          <button class="map-form" @click="getNearbyAirports()">Near Me</button>
+          </p>
+            <input class="map-form" v-model="filterAirports" type="text" placeholder="Filter Results" />
+          <p>
+            <input class="map-form" v-model="filterAirports" type="radio" name="size" value="small"> Small</input>
+            <input class="map-form" v-model="filterAirports" type="radio" name="size" value="large"> Large</input> 
+          </p>
+<!--         </div>
+        <dir v-else>
+          <h3>Please Login</h3>
+        </dir> -->
       </div>
     <GmapMap
       ref="gmap"
       @dragend="showCoords()"
       :center="{lat: ip.lat, lng: ip.lon}"
-      :zoom="10"
+      :zoom="8"
       map-type-id="terrain"
       style="width: 100%; height: 600px"
       :options="mapOptions"
@@ -70,9 +77,10 @@
     </GmapMap>
   </div>
     <div class="index-photography-cta overlay">
-      <button @click="openModal()" class="scroll">
+      <button v-if="user_id" @click="openModal()" class="scroll">
         Add a Location
       </button>
+      <router-link v-else :to="'/login'" class="scroll">Login to Add Locations</router-link>
     </div>
     <div class="container">
     <div class="support-hero">
@@ -211,6 +219,7 @@ export default {
       airportName: "",
       searchDistance: 50,
       searchAddress: "",
+      user_id: "",
       latLng: "",
       showModal: false,
       showModal2: false,
@@ -223,6 +232,7 @@ export default {
   },
   created: function() {
     window.scrollTo(0, 0);
+    this.user_id = localStorage.getItem("user_id");
     axios.get("/api/locations").then(response => {
       this.locations = response.data;
       this.locations.forEach(function(location) {

@@ -79,11 +79,13 @@
 
 <script>
 import axios from "axios";
+import { eventBus } from '../main.js';
 
 export default {
   data: function() {
     return {
       weather: {},
+      user_id: "",
       ip: {
             lat: 0,
             lon: 0,
@@ -95,6 +97,8 @@ export default {
     };
   },
   created: function() {
+    this.user_id = localStorage.getItem("user_id");
+    eventBus.$emit('currentUser', this.user_id )
     fetch('http://ip-api.com/json/').then(response => 
       response.json()).then(data => 
         this.ip = data);

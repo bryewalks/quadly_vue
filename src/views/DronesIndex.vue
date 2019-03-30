@@ -104,6 +104,13 @@
           </div>
         </div>
     </div>
+<!--     <div v-else>
+      <div class="agency-portfolio">
+        <div class="container">
+          Login to add drones to your collection
+        </div>
+      </div>
+    </div> -->
 
     </div>  
   </div>

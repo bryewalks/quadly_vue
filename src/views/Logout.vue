@@ -13,6 +13,7 @@ export default {
     localStorage.removeItem("user_id");
     localStorage.removeItem("admin");
     this.$router.push("/");
+    
   }
 };
 </script>
