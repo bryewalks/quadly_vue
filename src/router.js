@@ -8,14 +8,7 @@ import Logout from './views/Logout.vue'
 import UserLocationsIndex from './views/UserLocationsIndex.vue'
 import LocationsIndex from './views/LocationsIndex.vue'
 import LocationsShow from './views/LocationsShow.vue'
-// import LocationsNew from './views/LocationsNew.vue'
 import DronesIndex from './views/DronesIndex.vue'
-// import DronesShow from './views/DronesShow.vue'
-// import DronesNew from './views/DronesNew.vue'
-// import DronesEdit from './views/DronesEdit.vue'
-// import WeathersShow from './views/WeathersShow.vue'
-// import LocationReviewsNew from './views/LocationReviewsNew.vue'
-// import LocationReviewsShow from './views/LocationReviewsShow.vue'
 
 Vue.use(Router)
 
@@ -30,15 +23,8 @@ export default new Router({
     { path: '/logout', name: 'logout', component: Logout },
     { path: '/userlocations', name: 'user-locations-index', component: UserLocationsIndex },
     { path: '/locations', name: 'locations-index', component: LocationsIndex },
-    // { path: '/locations/new', name: 'locations-new', component: LocationsNew },
     { path: '/locations/:id', name: 'locations-show', component: LocationsShow },
-    // { path: '/locationreviews/new', name: 'location-reviews-new', component: LocationReviewsNew },
-    // { path: '/locationreviews/:id', name: 'location-reviews-show', component: LocationReviewsShow },
     { path: '/drones', name: 'drones-index', component: DronesIndex },
     { path: '*', redirect: '/' }
-    // { path: '/drones/new', name: 'drones-new', component: DronesNew },
-    // { path: '/drones/:id', name: 'drones-show', component: DronesShow },
-    // { path: '/drones/:id/edit', name: 'drones-edit', component: DronesEdit },
-    // { path: '/weathers/:id', name: 'weathers-show', component: WeathersShow }
   ]
 })
