@@ -103,6 +103,7 @@ export default {
   },
   methods: {
     checkFlightStatus: function() {
+      window.scrollTo(0, 0);
       var params = {
                     search_lat: this.ip.latitude,
                     search_lng: this.ip.longitude

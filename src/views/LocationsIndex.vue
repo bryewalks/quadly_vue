@@ -99,11 +99,11 @@
             <form v-on:submit.prevent="submit()">
               <div class="form-group">
                 <label>Location Name: </label>
-                <input class='form-control' type='text' v-model="newLocationName" placeholder="ex: Afton Park">
+                <input class='form-control' type='text' v-model="newLocationName" placeholder="ex: Afton Park" required>
               </div>
               <div class="form-group">
                 <label>Location Address: </label>
-                <input class='form-control' type='text' v-model="newLocationAddress" placeholder="ex: 8725 Elva Rd Dekalb, Il">
+                <input class='form-control' type='text' v-model="newLocationAddress" placeholder="ex: 8725 Elva Rd Dekalb, Il" required>
               </div>
               <div>
                 <input type="submit" value="Add New location" class="btn btn-primary">
@@ -122,7 +122,7 @@
             <form v-on:submit.prevent="submit()">
               <div class="form-group">
                 <label>Location Name: </label>
-                <input class='form-control' type='text' v-model="newLocationName" placeholder="ex: Afton Park">
+                <input class='form-control' type='text' v-model="newLocationName" placeholder="ex: Afton Park" required>
               </div>
               <div>
                 <input type="submit" value="Add New location" class="btn btn-primary">
